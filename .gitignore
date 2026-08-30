@@ -1,0 +1,22 @@
+# SentinelMCP Repository Ignore Configuration
+
+# Python Bytecode & Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Runtime Ephemeral Sandboxes (Generated during DB security isolation tests)
+data/sandboxes/sb_*
+
+# Local Environment Variables & Secrets
+.env
+.env.*
+!.env.example
+
+# IDE & OS Metadata
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

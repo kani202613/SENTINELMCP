@@ -1,0 +1,65 @@
+{
+  "junior_analyst": {
+    "role": "junior_analyst",
+    "allowed_tools": [
+      "pdf_reader.read_pdf",
+      "file_tool.read_file",
+      "github_tool.read_issue",
+      "database_tool.query_select",
+      "slack_tool.send_message",
+      "web_tool.fetch_page",
+      "http_tool.send_request"
+    ],
+    "disallowed_tools": [
+      "file_tool.write_file",
+      "file_tool.delete_file",
+      "github_tool.delete_branch",
+      "database_tool.query_delete"
+    ],
+    "max_data_classification": "INTERNAL"
+  },
+  "senior_analyst": {
+    "role": "senior_analyst",
+    "allowed_tools": [
+      "*"
+    ],
+    "disallowed_tools": [
+      "database_tool.query_delete"
+    ],
+    "max_data_classification": "CONFIDENTIAL"
+  },
+  "developer": {
+    "role": "developer",
+    "allowed_tools": [
+      "*"
+    ],
+    "disallowed_tools": [
+      "database_tool.query_delete"
+    ],
+    "max_data_classification": "CONFIDENTIAL"
+  },
+  "lead_engineer": {
+    "role": "lead_engineer",
+    "allowed_tools": [
+      "*"
+    ],
+    "disallowed_tools": [],
+    "max_data_classification": "RESTRICTED"
+  },
+  "hr_manager": {
+    "role": "hr_manager",
+    "allowed_tools": [
+      "*"
+    ],
+    "disallowed_tools": [],
+    "max_data_classification": "RESTRICTED"
+  },
+  "admin": {
+    "role": "admin",
+    "allowed_tools": [
+      "*"
+    ],
+    "disallowed_tools": [],
+    "max_data_classification": "RESTRICTED"
+  }
+}

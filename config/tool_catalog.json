@@ -1,0 +1,69 @@
+{
+  "pdf_reader": {
+    "read_pdf": {
+      "base_risk": 0.1,
+      "category": "Core",
+      "description": "Read PDF document"
+    }
+  },
+  "file_tool": {
+    "read_file": {
+      "base_risk": 0.15,
+      "category": "Core",
+      "description": "Read file from filesystem"
+    },
+    "write_file": {
+      "base_risk": 0.65,
+      "category": "Core",
+      "description": "Write file to filesystem"
+    },
+    "delete_file": {
+      "base_risk": 0.85,
+      "category": "Core",
+      "description": "Delete file from filesystem"
+    }
+  },
+  "github_tool": {
+    "read_issue": {
+      "base_risk": 0.2,
+      "category": "Core",
+      "description": "Read public GitHub issue"
+    },
+    "read_private_repo": {
+      "base_risk": 0.7,
+      "category": "Core",
+      "description": "Read private GitHub repository"
+    },
+    "delete_branch": {
+      "base_risk": 0.85,
+      "category": "Core",
+      "description": "Delete GitHub branch"
+    }
+  },
+  "database_tool": {
+    "query_select": {
+      "base_risk": 0.25,
+      "category": "Core",
+      "description": "Run SQL SELECT query"
+    },
+    "query_delete": {
+      "base_risk": 0.85,
+      "category": "Core",
+      "description": "Run SQL DELETE query"
+    }
+  },
+  "slack_tool": {
+    "send_message": {
+      "base_risk": 0.35,
+      "category": "Core",
+      "description": "Post message to Slack channel"
+    }
+  },
+  "web_tool": {
+    "fetch_page": {
+      "base_risk": 0.25,
+      "category": "Extended",
+      "description": "Fetch public web page"
+    }
+  }
+}

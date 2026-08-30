@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelMCP — Real-Time Security Operations Dashboard &amp; Manual Security Test (Goal 6A)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --panel-bg: #1e293b;
+            --border-color: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-red-glow: rgba(239, 68, 68, 0.4);
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .live-badge {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--accent-green);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--accent-green);
+        }
+
+        /* 1. Stat Cards Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .stat-card .label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Main Dashboard Panels Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Decision Band Badges */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .badge-SAFE { background-color: var(--accent-green); color: #000; }
+        .badge-MONITOR { background-color: var(--accent-blue); color: #fff; }
+        .badge-SUSPICIOUS { background-color: var(--accent-orange); color: #000; }
+        .badge-BLOCKED { background-color: var(--accent-red); color: #fff; box-shadow: 0 0 10px var(--accent-red-glow); }
+
+        /* Feature Progress Bars */
+        .feature-row {
+            margin-bottom: 10px;
+        }
+        .feature-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        .progress-bar-bg {
+            background-color: #334155;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--accent-blue);
+            transition: width 0.3s ease;
+        }
+
+        /* Cytoscape Container */
+        #cy {
+            width: 100%;
+            height: 250px;
+            background-color: #0f172a;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Form Controls */
+        label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            display: block;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 16px;
+            background-color: var(--accent-blue);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        /* Audit Stream Table */
+        .audit-table-container {
+            max-height: 220px;
+            overflow-y: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        th, td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        th {
+            color: var(--text-secondary);
+            position: sticky;
+            top: 0;
+            background-color: var(--panel-bg);
+        }
+
+        .full-width { grid-column: span 3; }
+        .span-2 { grid-column: span 2; }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-header">
+        <div>
+            <h1>SentinelMCP Security Operations Dashboard &amp; Manual Security Test</h1>
+            <span style="font-size: 12px; color: var(--text-secondary);">Real-Time Session Interception &amp; Manual Exploit Simulator (Goal 6A)</span>
+        </div>
+        <span class="live-badge">● LIVE INTERCEPTOR ACTIVE</span>
+    </div>
+
+    <!-- Panel 1: System Overview Stat Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="label">Total Requests</div>
+            <div class="value" id="stat-total">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Blocked Count</div>
+            <div class="value" id="stat-blocked" style="color: var(--accent-red);">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Sandboxed Count</div>
+            <div class="value" id="stat-sandboxed" style="color: var(--accent-orange);">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Mean SRI Risk Score</div>
+            <div class="value" id="stat-mean-sri">0.0</div>
+        </div>
+        <div class="stat-card">
+            <div class="label">Mean Interceptor Latency</div>
+            <div class="value" id="stat-mean-latency">0.00 ms</div>
+        </div>
+    </div>
+
+    <!-- NEW SECTION: MANUAL SECURITY TESTER (Goal 6A) -->
+    <div class="panel full-width" style="margin-bottom: 20px; border: 2px solid var(--accent-blue);">
+        <div class="panel-title">
+            <span>Manual Security Test &amp; Exploit Simulation Mode</span>
+            <span style="font-size: 11px; color: var(--accent-blue); font-weight: 700;">GOAL 6A INTERCEPTOR PATH</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <!-- Input Form -->
+            <div>
+                <label for="test-mode">Testing Mode:</label>
+                <select id="test-mode" onchange="toggleTestMode()">
+                    <option value="category">Category-Based Input (7 Enterprise Types)</option>
+                    <option value="advanced">Advanced Tool Simulation Mode</option>
+                </select>
+
+                <div id="category-controls">
+                    <label for="input-type">Select Input Type:</label>
+                    <select id="input-type" onchange="updateCategoryFields()">
+                        <option value="Email">1. Email</option>
+                        <option value="Web">2. Web</option>
+                        <option value="PDF">3. PDF</option>
+                        <option value="GitHub">4. GitHub</option>
+                        <option value="Slack">5. Slack</option>
+                        <option value="Database">6. Database</option>
+                        <option value="HTTP/API">7. HTTP/API</option>
+                    </select>
+
+                    <label for="user-prompt">Context / User Prompt:</label>
+                    <input type="text" id="user-prompt" value="Review requested enterprise input">
+
+                    <label for="field-param-1" id="label-param-1">Email ID / Target:</label>
+                    <input type="text" id="field-param-1" value="1">
+
+                    <label for="field-param-2" id="label-param-2">Content / Payload:</label>
+                    <textarea id="field-param-2" rows="3">Normal email query content</textarea>
+                </div>
+
+                <div id="advanced-controls" style="display: none;">
+                    <label for="adv-tool">Select Tool:</label>
+                    <select id="adv-tool">
+                        <option value="pdf_reader">pdf_reader</option>
+                        <option value="file_tool">file_tool</option>
+                        <option value="github_tool">github_tool</option>
+                        <option value="database_tool">database_tool</option>
+                        <option value="slack_tool">slack_tool</option>
+                        <option value="web_tool">web_tool</option>
+                        <option value="http_tool">http_tool</option>
+                    </select>
+
+                    <label for="adv-action">Action:</label>
+                    <input type="text" id="adv-action" value="read_file">
+
+                    <label for="adv-args">Arguments (JSON):</label>
+                    <textarea id="adv-args" rows="3">{"filepath": "secret.txt"}</textarea>
+                </div>
+
+                <button onclick="submitManualTest()">Submit Request through SentinelInterceptor</button>
+            </div>
+
+            <!-- Real-Time Manual Execution Result Display -->
+            <div style="background-color: #0f172a; padding: 14px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 12px; line-height: 1.5; height: 320px; overflow-y: auto;">
+                <div style="font-weight: 700; color: var(--text-secondary); margin-bottom: 8px;">REAL RUNTIME RESULT DISPLAY:</div>
+                <div>Interceptor Decision: <span id="manual-dec-badge" class="badge badge-SAFE">Awaiting Submission</span></div>
+                <div style="margin-top: 6px;">Final SRI Risk Score: <strong id="manual-sri">0</strong> / 100</div>
+                <div>SRI Base / Graph / Injection Bonus: <span id="manual-sri-breakdown">0 / +0 / +0</span></div>
+                <div>Matched Graph Path: <strong id="manual-graph-path" style="color: var(--accent-red);">None</strong></div>
+                <div style="margin-top: 6px;">Feature Breakdown: <span id="manual-features">CD: 0.00 | PV: 0.00 | TR: 0.00 | ST: 0.00 | ML: 0.00</span></div>
+                <div style="margin-top: 6px;">Detection Rationale: <div id="manual-rationale" style="color: var(--text-secondary); margin-top: 2px;">Submit a request to view real scoring explanation.</div></div>
+                <div style="margin-top: 6px;">Protected Tool Execution Status: <strong id="manual-exec-status">N/A</strong></div>
+                <div>Sandbox Invocation: <strong id="manual-sandbox-status">NO</strong></div>
+                <div style="margin-top: 6px;">Returned Tool Payload:</div>
+                <pre id="manual-tool-payload" style="background-color: #1e293b; padding: 8px; border-radius: 4px; font-size: 11px; white-space: pre-wrap; margin-top: 4px; color: var(--text-primary);">Awaiting execution...</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN PANELS GRID -->
+    <div class="main-grid">
+        <!-- Panel 2: Real-Time Interceptor Feed -->
+        <div class="panel">
+            <div class="panel-title">
+                <span>Panel 2: Interceptor Feed</span>
+                <span id="decision-badge" class="badge badge-SAFE">SAFE</span>
+            </div>
+            <div style="font-size: 13px; line-height: 1.6;">
+                <div><strong>Session ID:</strong> <span id="feed-session-id">N/A</span></div>
+                <div><strong>Target Tool:</strong> <span id="feed-tool">N/A</span></div>
+                <div><strong>Target Action:</strong> <span id="feed-action">N/A</span></div>
+                <div><strong>User Role:</strong> <span id="feed-role">junior_analyst</span></div>
+            </div>
+        </div>
+
+        <!-- Panel 3: SRI Score Card -->
+        <div class="panel">
+            <div class="panel-title">Panel 3: SRI Score Breakdown</div>
+            <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px;">
+                <span style="font-size: 36px; font-weight: 800;" id="sri-score">0</span>
+                <span style="font-size: 14px; color: var(--text-secondary);">/ 100 SRI</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                <div>Base SRI (Features): <strong id="sri-base">0</strong></div>
+                <div>Graph Bonus Path: <strong id="sri-graph" style="color: var(--accent-red);">+0</strong></div>
+                <div>Injection Bonus: <strong id="sri-injection" style="color: var(--accent-orange);">+0</strong></div>
+                <div>Hysteresis Status: <strong id="sri-hysteresis">Inactive</strong></div>
+            </div>
+        </div>
+
+        <!-- Panel 4: 5-Feature Breakdown -->
+        <div class="panel">
+            <div class="panel-title">Panel 4: 5-Feature Risk Breakdown</div>
+            <div class="feature-row">
+                <div class="feature-header"><span>Context Drift (CD)</span><span id="score-cd">0.00</span></div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-cd" style="width: 0%;"></div></div>
+            </div>
+            <div class="feature-row">
+                <div class="feature-header"><span>Policy Violation (PV)</span><span id="score-pv">0.00</span></div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-pv" style="width: 0%;"></div></div>
+            </div>
+            <div class="feature-row">
+                <div class="feature-header"><span>Transition Risk (TR)</span><span id="score-tr">0.00</span></div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-tr" style="width: 0%;"></div></div>
+            </div>
+            <div class="feature-row">
+                <div class="feature-header"><span>Source Trust (ST)</span><span id="score-st">0.00</span></div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-st" style="width: 0%;"></div></div>
+            </div>
+            <div class="feature-row">
+                <div class="feature-header"><span>ML Content Scanner (ML)</span><span id="score-ml">0.00</span></div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-ml" style="width: 0%;"></div></div>
+            </div>
+        </div>
+
+        <!-- Panel 5: Cytoscape Graph -->
+        <div class="panel span-2">
+            <div class="panel-title">
+                <span>Panel 5: §4b Session Graph Analyzer</span>
+                <span id="graph-matched-label" style="font-size: 11px; color: var(--accent-red); font-weight: 700;"></span>
+            </div>
+            <div id="cy"></div>
+        </div>
+
+        <!-- Panel 6: Explanation Rationale -->
+        <div class="panel">
+            <div class="panel-title">Panel 6: Explanation Rationale</div>
+            <div id="explanation-text" style="font-size: 12px; line-height: 1.6; color: var(--text-primary); background-color: #0f172a; padding: 12px; border-radius: 6px; border: 1px solid var(--border-color); height: 230px; overflow-y: auto;">
+                Awaiting interceptor event...
+            </div>
+        </div>
+
+        <!-- Panel 7: Audit Stream Table -->
+        <div class="panel full-width">
+            <div class="panel-title">Panel 7: Live JSON Audit Stream &amp; Log Table (data/m5_audit_log.jsonl)</div>
+            <div class="audit-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Session ID</th>
+                            <th>Tool.Action</th>
+                            <th>Decision</th>
+                            <th>SRI Score</th>
+                            <th>Latency</th>
+                            <th>Sandboxed</th>
+                        </tr>
+                    </thead>
+                    <tbody id="audit-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Panel 8: Sandbox Status -->
+        <div class="panel span-2">
+            <div class="panel-title">Panel 8: Enterprise DB Sandboxing Isolation Monitor</div>
+            <div style="font-size: 13px; line-height: 1.6;">
+                <div>Production DB Status: <strong style="color: var(--accent-green);">100% UNTOUCHED (10/10 Employee Rows Preserved)</strong></div>
+                <div>Ephemeral Sandbox Active: <strong id="sandbox-active-status">NO</strong></div>
+            </div>
+        </div>
+
+        <!-- Panel 9: Policy Viewer -->
+        <div class="panel">
+            <div class="panel-title">Panel 9: Policy &amp; Tool Catalog</div>
+            <div style="font-size: 12px; line-height: 1.5; color: var(--text-secondary);">
+                <div><strong>Role:</strong> junior_analyst</div>
+                <div><strong>Allowed Tools:</strong> file_tool, github_tool, database_tool, slack_tool, web_tool, http_tool, pdf_reader</div>
+                <div><strong>Max Classification:</strong> INTERNAL</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cy = cytoscape({
+            container: document.getElementById('cy'),
+            style: [
+                {
+                    selector: 'node',
+                    style: {
+                        'background-color': '#3b82f6',
+                        'label': 'data(label)',
+                        'color': '#ffffff',
+                        'font-size': '10px',
+                        'text-valign': 'center',
+                        'text-halign': 'center',
+                        'width': '80px',
+                        'height': '30px',
+                        'shape': 'roundrectangle'
+                    }
+                },
+                {
+                    selector: 'edge',
+                    style: {
+                        'width': 2,
+                        'line-color': '#64748b',
+                        'target-arrow-color': '#64748b',
+                        'target-arrow-shape': 'triangle',
+                        'curve-style': 'bezier'
+                    }
+                },
+                {
+                    selector: 'edge[?dangerous]',
+                    style: {
+                        'width': 4,
+                        'line-color': '#ef4444',
+                        'target-arrow-color': '#ef4444',
+                        'line-style': 'solid'
+                    }
+                }
+            ]
+        });
+
+        function toggleTestMode() {
+            let mode = document.getElementById('test-mode').value;
+            document.getElementById('category-controls').style.display = (mode === 'category') ? 'block' : 'none';
+            document.getElementById('advanced-controls').style.display = (mode === 'advanced') ? 'block' : 'none';
+        }
+
+        function updateCategoryFields() {
+            let type = document.getElementById('input-type').value;
+            let l1 = document.getElementById('label-param-1');
+            let l2 = document.getElementById('label-param-2');
+            let p1 = document.getElementById('field-param-1');
+            let p2 = document.getElementById('field-param-2');
+
+            if (type === 'Email') {
+                l1.innerText = 'Email ID:'; p1.value = '1';
+                l2.innerText = 'Email Content / Body:'; p2.value = 'Quarterly security update';
+            } else if (type === 'Web') {
+                l1.innerText = 'URL:'; p1.value = 'https://company.internal/docs';
+                l2.innerText = 'Web Context:'; p2.value = 'Fetch documentation';
+            } else if (type === 'PDF') {
+                l1.innerText = 'Doc ID:'; p1.value = '1';
+                l2.innerText = 'Document Title/Path:'; p2.value = 'report.pdf';
+            } else if (type === 'GitHub') {
+                l1.innerText = 'Repository / Issue ID:'; p1.value = 'core-backend';
+                l2.innerText = 'Action Type (read_issue / read_private_repo):'; p2.value = 'read_issue';
+            } else if (type === 'Slack') {
+                l1.innerText = 'Channel:'; p1.value = '#public';
+                l2.innerText = 'Slack Message:'; p2.value = 'Summary of daily tasks';
+            } else if (type === 'Database') {
+                l1.innerText = 'SQL Query:'; p1.value = 'SELECT * FROM Employees';
+                l2.innerText = 'Action (query_select / query_delete):'; p2.value = 'query_select';
+            } else if (type === 'HTTP/API') {
+                l1.innerText = 'API Endpoint URL:'; p1.value = 'https://api.external/data';
+                l2.innerText = 'Request Payload:'; p2.value = '{"action": "sync"}';
+            }
+        }
+
+        function submitManualTest() {
+            let mode = document.getElementById('test-mode').value;
+            let payload = {
+                session_id: "manual_test_session",
+                mode: mode,
+                context: document.getElementById('user-prompt').value
+            };
+
+            if (mode === 'category') {
+                let type = document.getElementById('input-type').value;
+                payload.input_type = type;
+                payload.p1 = document.getElementById('field-param-1').value;
+                payload.p2 = document.getElementById('field-param-2').value;
+                
+                if (type === 'GitHub') { payload.repo = payload.p1; payload.action = payload.p2; payload.issue_id = 2; }
+                else if (type === 'Database') { payload.query = payload.p1; payload.action = payload.p2; }
+                else if (type === 'Slack') { payload.channel = payload.p1; payload.message = payload.p2; }
+                else if (type === 'Email') { payload.email_id = payload.p1; payload.content = payload.p2; payload.action = 'read_email'; }
+                else if (type === 'Web') { payload.url = payload.p1; }
+                else if (type === 'HTTP/API') { payload.url = payload.p1; payload.payload = payload.p2; }
+            } else {
+                payload.tool_name = document.getElementById('adv-tool').value;
+                payload.action = document.getElementById('adv-action').value;
+                try {
+                    payload.args = JSON.parse(document.getElementById('adv-args').value);
+                } catch(e) {
+                    alert("Invalid JSON in Arguments field!");
+                    return;
+                }
+            }
+
+            fetch('/api/manual_test', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+            .then(r => r.json())
+            .then(res => {
+                let dec = res.decision;
+                let badge = document.getElementById('manual-dec-badge');
+                badge.innerText = dec;
+                badge.className = 'badge badge-' + dec;
+
+                let sri = res.sri_details ? res.sri_details.sri : res.sri;
+                document.getElementById('manual-sri').innerText = sri;
+
+                let sri_base = res.sri_details ? res.sri_details.sri_base : 0;
+                let g_bonus = res.sri_details ? res.sri_details.graph_bonus : 0;
+                let i_bonus = res.sri_details ? res.sri_details.injection_bonus : 0;
+                document.getElementById('manual-sri-breakdown').innerText = `${sri_base} / +${g_bonus} / +${i_bonus}`;
+
+                let path = res.sri_details ? res.sri_details.matched_path : '';
+                document.getElementById('manual-graph-path').innerText = path || 'None';
+
+                let fb = res.sri_details ? res.sri_details.feature_scores : {CD:0, PV:0, TR:0, ST:0, ML:0};
+                document.getElementById('manual-features').innerText = `CD: ${fb.CD.toFixed(2)} | PV: ${fb.PV.toFixed(2)} | TR: ${fb.TR.toFixed(2)} | ST: ${fb.ST.toFixed(2)} | ML: ${fb.ML.toFixed(2)}`;
+
+                document.getElementById('manual-rationale').innerText = res.explanation || 'Request evaluated normally.';
+                document.getElementById('manual-exec-status').innerText = res.status;
+                document.getElementById('manual-sandbox-status').innerText = res.sandboxed ? 'YES' : 'NO';
+
+                document.getElementById('manual-tool-payload').innerText = JSON.stringify(res.result || res.tool_result || {}, null, 2);
+
+                updateDashboard();
+            });
+        }
+
+        function updateDashboard() {
+            fetch('/api/stats')
+                .then(r => r.json())
+                .then(data => {
+                    document.getElementById('stat-total').innerText = data.total_requests;
+                    document.getElementById('stat-blocked').innerText = data.blocked_count;
+                    document.getElementById('stat-sandboxed').innerText = data.sandboxed_count;
+                    document.getElementById('stat-mean-sri').innerText = data.mean_sri;
+                    document.getElementById('stat-mean-latency').innerText = data.mean_latency_ms + ' ms';
+                });
+
+            fetch('/api/audit_stream')
+                .then(r => r.json())
+                .then(entries => {
+                    let tbody = document.getElementById('audit-table-body');
+                    tbody.innerHTML = '';
+                    entries.reverse().forEach(e => {
+                        let tr = document.createElement('tr');
+                        let dec = e.decision || (e.max_interceptor_decision || 'SAFE');
+                        tr.innerHTML = `
+                            <td>${e.timestamp || 'N/A'}</td>
+                            <td>${e.workflow_id || e.session_id || 'N/A'}</td>
+                            <td>${e.tool_name || 'N/A'}.${e.action || ''}</td>
+                            <td><span class="badge badge-${dec}">${dec}</span></td>
+                            <td>${e.sri || 0}</td>
+                            <td>${e.scoring_latency_ms || e.wf_duration_ms || 0} ms</td>
+                            <td>${e.sandboxed ? 'YES' : 'NO'}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+
+                    if (entries.length > 0) {
+                        let latest = entries[0];
+                        let dec = latest.decision || latest.max_interceptor_decision || 'SAFE';
+                        let badge = document.getElementById('decision-badge');
+                        badge.innerText = dec;
+                        badge.className = 'badge badge-' + dec;
+
+                        document.getElementById('feed-session-id').innerText = latest.workflow_id || latest.session_id || 'N/A';
+                        document.getElementById('feed-tool').innerText = latest.tool_name || 'N/A';
+                        document.getElementById('feed-action').innerText = latest.action || 'N/A';
+
+                        let sri = latest.sri || 0;
+                        document.getElementById('sri-score').innerText = sri;
+                        document.getElementById('sri-base').innerText = latest.sri_base || (latest.feature_breakdown ? 40 : 0);
+                        document.getElementById('sri-graph').innerText = '+' + (latest.graph_bonus || 0);
+                        document.getElementById('sri-injection').innerText = '+' + (latest.injection_bonus || 0);
+                        document.getElementById('sri-hysteresis').innerText = latest.hysteresis_applied ? 'ACTIVE (Elevated Band)' : 'Inactive';
+
+                        let fb = latest.feature_breakdown || latest.feature_scores || {CD:0, PV:0, TR:0, ST:0, ML:0};
+                        ['cd','pv','tr','st','ml'].forEach(k => {
+                            let val = fb[k.toUpperCase()] || 0.0;
+                            document.getElementById('score-' + k).innerText = val.toFixed(2);
+                            document.getElementById('bar-' + k).style.width = (val * 100) + '%';
+                        });
+
+                        document.getElementById('explanation-text').innerText = latest.explanation || 'Request evaluated normally.';
+                        document.getElementById('sandbox-active-status').innerText = latest.sandboxed ? 'YES (Executing mock in-memory)' : 'NO';
+                    }
+                });
+        }
+
+        setInterval(updateDashboard, 3000);
+        updateDashboard();
+        updateCategoryFields();
+    </script>
+</body>
+</html>
