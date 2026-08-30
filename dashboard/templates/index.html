@@ -49,9 +49,6 @@
             display: flex;
         }
 
-        /* --------------------------------------------------
-           APP SHELL & LAYOUT
-        -------------------------------------------------- */
         .app-container {
             display: flex;
             width: 100vw;
@@ -59,9 +56,7 @@
             overflow: hidden;
         }
 
-        /* --------------------------------------------------
-           LEFT SIDEBAR
-        -------------------------------------------------- */
+        /* SIDEBAR */
         .sidebar {
             width: 250px;
             min-width: 250px;
@@ -93,37 +88,16 @@
             box-shadow: 0 0 12px var(--accent-blue-glow);
         }
 
-        .brand-logo svg {
-            width: 20px;
-            height: 20px;
-            fill: #fff;
-        }
+        .brand-logo svg { width: 20px; height: 20px; fill: #fff; }
 
-        .brand-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-name {
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: -0.3px;
-            color: #ffffff;
-        }
-
-        .brand-sub {
-            font-size: 10px;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .brand-info { display: flex; flex-direction: column; }
+        .brand-name { font-size: 15px; font-weight: 800; letter-spacing: -0.3px; color: #ffffff; }
+        .brand-sub { font-size: 10px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
         .sidebar-nav {
             padding: 16px 12px;
             flex: 1;
             display: flex;
-            flex-direction: flex-start;
             flex-direction: column;
             gap: 4px;
             overflow-y: auto;
@@ -151,23 +125,14 @@
             transition: all 0.2s ease;
         }
 
-        .nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-        }
-
+        .nav-item:hover { background-color: rgba(255, 255, 255, 0.05); color: var(--text-primary); }
         .nav-item.active {
             background-color: rgba(59, 130, 246, 0.15);
             color: var(--accent-blue);
             font-weight: 600;
             border-left: 3px solid var(--accent-blue);
         }
-
-        .nav-item svg {
-            width: 18px;
-            height: 18px;
-            stroke-width: 2;
-        }
+        .nav-item svg { width: 18px; height: 18px; stroke-width: 2; }
 
         .sidebar-footer {
             padding: 16px;
@@ -196,9 +161,7 @@
             box-shadow: 0 0 8px var(--accent-green);
         }
 
-        /* --------------------------------------------------
-           MAIN CONTENT AREA
-        -------------------------------------------------- */
+        /* MAIN CONTENT AREA */
         .main-content {
             flex: 1;
             display: flex;
@@ -208,9 +171,7 @@
             background-color: var(--bg-dark);
         }
 
-        /* --------------------------------------------------
-           TOP HEADER
-        -------------------------------------------------- */
+        /* TOP HEADER */
         .top-header {
             height: 60px;
             min-height: 60px;
@@ -223,38 +184,13 @@
             z-index: 10;
         }
 
-        .header-title-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .header-title-group { display: flex; align-items: center; gap: 12px; }
+        .header-page-title { font-size: 17px; font-weight: 700; margin: 0; color: #fff; letter-spacing: -0.3px; }
+        .header-page-subtitle { font-size: 12px; color: var(--text-muted); border-left: 1px solid var(--border-color); padding-left: 12px; }
 
-        .header-page-title {
-            font-size: 17px;
-            font-weight: 700;
-            margin: 0;
-            color: #fff;
-            letter-spacing: -0.3px;
-        }
+        .header-actions { display: flex; align-items: center; gap: 14px; }
 
-        .header-page-subtitle {
-            font-size: 12px;
-            color: var(--text-muted);
-            border-left: 1px solid var(--border-color);
-            padding-left: 12px;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .search-box {
-            position: relative;
-            width: 220px;
-        }
-
+        .search-box { position: relative; width: 220px; }
         .search-box input {
             width: 100%;
             padding: 7px 12px 7px 32px;
@@ -266,21 +202,8 @@
             outline: none;
             transition: all 0.2s;
         }
-
-        .search-box input:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 8px var(--accent-blue-glow);
-        }
-
-        .search-box svg {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 14px;
-            height: 14px;
-            stroke: var(--text-muted);
-        }
+        .search-box input:focus { border-color: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue-glow); }
+        .search-box svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; stroke: var(--text-muted); }
 
         .btn-header {
             display: flex;
@@ -296,11 +219,7 @@
             font-weight: 600;
             transition: all 0.2s;
         }
-
-        .btn-header:hover {
-            background-color: var(--border-color);
-            color: var(--text-primary);
-        }
+        .btn-header:hover { background-color: var(--border-color); color: var(--text-primary); }
 
         .live-status-pill {
             display: flex;
@@ -330,9 +249,7 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
         }
 
-        /* --------------------------------------------------
-           VIEW CONTAINER & SECTIONS
-        -------------------------------------------------- */
+        /* VIEW CONTAINER & SECTIONS */
         .view-container {
             flex: 1;
             padding: 20px 24px;
@@ -340,20 +257,10 @@
             position: relative;
         }
 
-        .view-section {
-            display: none;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-        }
+        .view-section { display: none; flex-direction: column; gap: 20px; width: 100%; }
+        .view-section.active { display: flex; }
 
-        .view-section.active {
-            display: flex;
-        }
-
-        /* --------------------------------------------------
-           COMMON CARDS & PANELS
-        -------------------------------------------------- */
+        /* CARDS & PANELS */
         .card {
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
@@ -375,12 +282,7 @@
         }
 
         /* KPI STAT CARDS */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 14px;
-        }
-
+        .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
         .stat-card {
             background-color: var(--panel-bg);
             border: 1px solid var(--border-color);
@@ -392,33 +294,10 @@
             overflow: hidden;
             transition: transform 0.2s, border-color 0.2s;
         }
-
-        .stat-card:hover {
-            border-color: var(--border-light);
-            transform: translateY(-2px);
-        }
-
-        .stat-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-        }
-
-        .stat-sub {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
+        .stat-card:hover { border-color: var(--border-light); transform: translateY(-2px); }
+        .stat-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .stat-value { font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px; }
+        .stat-sub { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
 
         /* BADGES */
         .badge {
@@ -435,83 +314,21 @@
         .badge-BLOCKED { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); box-shadow: 0 0 10px var(--accent-red-glow); }
 
         /* FEATURE PROGRESS BARS */
-        .feature-row {
-            margin-bottom: 12px;
-        }
-        .feature-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--text-secondary);
-        }
-        .progress-bar-bg {
-            background-color: #1a253c;
-            height: 7px;
-            border-radius: 4px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #60a5fa);
-            border-radius: 4px;
-            transition: width 0.4s ease;
-        }
+        .feature-row { margin-bottom: 12px; }
+        .feature-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; margin-bottom: 5px; color: var(--text-secondary); }
+        .progress-bar-bg { background-color: #1a253c; height: 7px; border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 4px; transition: width 0.4s ease; }
 
         /* TABLES */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-            text-align: left;
-        }
-
-        th {
-            background-color: var(--panel-card-bg);
-            color: var(--text-muted);
-            font-weight: 700;
-            text-transform: uppercase;
-            font-size: 10px;
-            letter-spacing: 0.6px;
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-        }
-
-        td {
-            padding: 11px 14px;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-
-        tr:hover td {
-            background-color: rgba(255,255,255,0.02);
-        }
-
-        .mono {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-        }
+        .table-responsive { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
+        th { background-color: var(--panel-card-bg); color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.6px; padding: 10px 14px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; }
+        td { padding: 11px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
+        tr:hover td { background-color: rgba(255,255,255,0.02); }
+        .mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
 
         /* FORM CONTROLS */
-        label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-top: 10px;
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
+        label { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 10px; display: block; text-transform: uppercase; letter-spacing: 0.4px; }
         input, select, textarea {
             width: 100%;
             padding: 9px 12px;
@@ -525,11 +342,7 @@
             outline: none;
             transition: border-color 0.2s;
         }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 6px var(--accent-blue-glow);
-        }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent-blue); box-shadow: 0 0 6px var(--accent-blue-glow); }
 
         .btn-primary {
             margin-top: 16px;
@@ -546,11 +359,7 @@
             box-shadow: 0 4px 12px var(--accent-blue-glow);
             transition: all 0.2s ease;
         }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            transform: translateY(-1px);
-        }
+        .btn-primary:hover { background: linear-gradient(135deg, #2563eb, #1d4ed8); transform: translateY(-1px); }
 
         /* CYTOSCAPE CANVAS */
         #cy {
@@ -572,7 +381,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .modal-card {
             background-color: var(--panel-bg);
             border: 1px solid var(--border-light);
@@ -587,29 +395,9 @@
             flex-direction: column;
             gap: 16px;
         }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
-        }
-
-        .modal-title {
-            font-size: 16px;
-            font-weight: 800;
-            color: #fff;
-        }
-
-        .btn-close {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 20px;
-            cursor: pointer;
-        }
-
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+        .modal-title { font-size: 16px; font-weight: 800; color: #fff; }
+        .btn-close { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
         .btn-close:hover { color: #fff; }
 
         /* GRID LAYOUTS */
@@ -617,7 +405,6 @@
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .grid-73 { display: grid; grid-template-columns: 7fr 3fr; gap: 20px; }
 
-        /* RESPONSIVE */
         @media (max-width: 1024px) {
             .stats-grid { grid-template-columns: repeat(3, 1fr); }
             .grid-2, .grid-3, .grid-73 { grid-template-columns: 1fr; }
@@ -631,9 +418,7 @@
 
 <div class="app-container">
 
-    <!-- ==================================================
-         LEFT SIDEBAR NAVIGATION
-    ================================================== -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div>
             <div class="sidebar-header">
@@ -689,9 +474,7 @@
         </div>
     </aside>
 
-    <!-- ==================================================
-         MAIN CONTENT & TOP HEADER
-    ================================================== -->
+    <!-- MAIN CONTENT -->
     <main class="main-content">
 
         <header class="top-header">
@@ -720,12 +503,10 @@
 
         <div class="view-container">
 
-            <!-- ==================================================
-                 VIEW 1: DASHBOARD OVERVIEW PAGE
-            ================================================== -->
+            <!-- VIEW 1: DASHBOARD OVERVIEW -->
             <div class="view-section active" id="view-dashboard">
 
-                <!-- Top KPI Cards Grid -->
+                <!-- Top KPI Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <span class="stat-label">Total Requests</span>
@@ -758,7 +539,7 @@
                     </div>
                 </div>
 
-                <!-- SRI Risk Overview & 5-Feature Risk Breakdown -->
+                <!-- SRI Overview & 5-Features -->
                 <div class="grid-2">
                     <div class="card">
                         <div class="card-title">
@@ -817,7 +598,7 @@
                     </div>
                 </div>
 
-                <!-- Live Interceptor Stream Table -->
+                <!-- Feed Table -->
                 <div class="card">
                     <div class="card-title">
                         <span>Live Interceptor Activity Feed</span>
@@ -845,9 +626,7 @@
                 </div>
             </div>
 
-            <!-- ==================================================
-                 VIEW 2: LIVE INTERCEPTOR PAGE
-            ================================================== -->
+            <!-- VIEW 2: LIVE INTERCEPTOR PAGE -->
             <div class="view-section" id="view-interceptor">
                 <div class="card">
                     <div class="card-title">
@@ -896,13 +675,11 @@
                 </div>
             </div>
 
-            <!-- ==================================================
-                 VIEW 3: MANUAL SECURITY TEST PAGE
-            ================================================== -->
+            <!-- VIEW 3: MANUAL SECURITY TEST PAGE -->
             <div class="view-section" id="view-manual-test">
                 <div class="grid-2">
 
-                    <!-- Left: Input Form -->
+                    <!-- Left: Form -->
                     <div class="card" style="border-left: 3px solid var(--accent-blue);">
                         <div class="card-title">
                             <span>Manual Exploit &amp; Security Simulator</span>
@@ -959,7 +736,7 @@
                         <button class="btn-primary" onclick="submitManualTest()">RUN SECURITY TEST</button>
                     </div>
 
-                    <!-- Right: Real Runtime Security Result -->
+                    <!-- Right: Security Result -->
                     <div class="card" style="border-left: 3px solid var(--accent-green);">
                         <div class="card-title">
                             <span>Security Evaluation Result</span>
@@ -994,23 +771,67 @@
                 </div>
             </div>
 
-            <!-- ==================================================
-                 VIEW 4: SESSION GRAPH PAGE
-            ================================================== -->
+            <!-- VIEW 4: SESSION GRAPH PAGE -->
             <div class="view-section" id="view-session-graph">
-                <div class="card">
-                    <div class="card-title">
-                        <span>§4b Session Graph Analyzer &amp; Attack Path Visualizer</span>
-                        <span id="graph-matched-path-label" style="font-size: 11px; color: var(--accent-red); font-weight: 700;"></span>
+                <div class="card" style="margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px;">
+                        <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                            <label style="margin: 0; white-space: nowrap; font-size: 12px; font-weight: 700; color: #fff;">Select Session to Visualize:</label>
+                            <select id="session-graph-select" onchange="loadSessionGraph(this.value)" style="margin: 0; width: 320px;">
+                                <option value="">Loading sessions...</option>
+                            </select>
+                        </div>
+
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="loadSessionGraph('demo_dashboard_attack_session')" style="padding: 6px 12px; background: var(--panel-card-bg); border: 1px solid var(--accent-red); color: var(--accent-red); border-radius: 4px; font-weight: 700; font-size: 11px; cursor: pointer;">Load Attack Scenario</button>
+                            <button onclick="loadSessionGraph('demo_dashboard_benign_session')" style="padding: 6px 12px; background: var(--panel-card-bg); border: 1px solid var(--accent-green); color: var(--accent-green); border-radius: 4px; font-weight: 700; font-size: 11px; cursor: pointer;">Load Benign Scenario</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-73">
+                    <div class="card" style="padding: 12px;">
+                        <div class="card-title" style="margin-bottom: 10px;">
+                            <span>§4b Directed Transition Graph Canvas</span>
+                            <span id="graph-matched-path-label" style="font-size: 11px; color: var(--accent-red); font-weight: 700;"></span>
+                        </div>
+                        <div id="cy"></div>
                     </div>
 
-                    <div id="cy"></div>
+                    <div class="card">
+                        <div class="card-title">Session Graph Inspector</div>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px;">
+                            <div style="background: var(--panel-card-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="color: var(--text-muted); font-size: 10px; font-weight: 700;">ACTIVE SESSION ID</div>
+                                <div style="font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace; margin-top: 4px;" id="sg-session-id">Select a session</div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div style="background: var(--panel-card-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color);">
+                                    <div style="color: var(--text-muted); font-size: 10px; font-weight: 700;">MAX SRI SCORE</div>
+                                    <div style="font-size: 18px; font-weight: 800; color: #fff; margin-top: 2px;" id="sg-max-sri">0</div>
+                                </div>
+                                <div style="background: var(--panel-card-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color);">
+                                    <div style="color: var(--text-muted); font-size: 10px; font-weight: 700;">MAX DECISION</div>
+                                    <div style="margin-top: 4px;" id="sg-max-decision"><span class="badge badge-SAFE">N/A</span></div>
+                                </div>
+                            </div>
+
+                            <div id="sg-path-banner" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); padding: 10px; border-radius: 6px; color: var(--accent-red); font-weight: 700; font-size: 11px;">
+                                MATCHED ATTACK PATH:<br><span id="sg-path-text" style="color: #fff; font-weight: 500;"></span>
+                            </div>
+
+                            <div style="font-weight: 700; color: var(--text-secondary); margin-top: 6px;">CHRONOLOGICAL TOOL TIMELINE</div>
+                            <div id="sg-timeline" style="display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto;">
+                                <div style="color: var(--text-muted); font-size: 11px;">Select a session above to inspect transition timeline.</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- ==================================================
-                 VIEW 5: AUDIT LOGS PAGE
-            ================================================== -->
+            <!-- VIEW 5: AUDIT LOGS PAGE -->
             <div class="view-section" id="view-audit-logs">
                 <div class="card">
                     <div class="card-title">
@@ -1049,9 +870,7 @@
                 </div>
             </div>
 
-            <!-- ==================================================
-                 VIEW 6: POLICIES & TOOLS PAGE
-            ================================================== -->
+            <!-- VIEW 6: POLICIES & TOOLS PAGE -->
             <div class="view-section" id="view-policies">
                 <div class="grid-2">
                     <div class="card">
@@ -1085,7 +904,7 @@
 
 </div>
 
-<!-- AUDIT ENTRY DETAIL MODAL -->
+<!-- AUDIT DETAIL MODAL -->
 <div class="modal-overlay" id="audit-modal">
     <div class="modal-card">
         <div class="modal-header">
@@ -1122,32 +941,36 @@
             {
                 selector: 'node',
                 style: {
-                    'background-color': '#3b82f6',
+                    'background-color': '#2563eb',
                     'label': 'data(label)',
                     'color': '#ffffff',
                     'font-size': '11px',
                     'font-family': 'Inter, sans-serif',
+                    'font-weight': '600',
                     'text-valign': 'center',
                     'text-halign': 'center',
-                    'width': '100px',
-                    'height': '34px',
-                    'shape': 'roundrectangle'
+                    'width': '160px',
+                    'height': '38px',
+                    'shape': 'roundrectangle',
+                    'border-width': 2,
+                    'border-color': '#3b82f6'
                 }
             },
             {
                 selector: 'edge',
                 style: {
-                    'width': 2,
+                    'width': 3,
                     'line-color': '#475569',
                     'target-arrow-color': '#475569',
                     'target-arrow-shape': 'triangle',
-                    'curve-style': 'bezier'
+                    'curve-style': 'bezier',
+                    'arrow-scale': 1.2
                 }
             },
             {
                 selector: 'edge[?dangerous]',
                 style: {
-                    'width': 4,
+                    'width': 5,
                     'line-color': '#ef4444',
                     'target-arrow-color': '#ef4444',
                     'line-style': 'solid'
@@ -1157,6 +980,7 @@
     });
 
     let currentAuditEntries = [];
+    let availableSessions = [];
 
     // Navigation Switcher
     function switchView(viewId, el) {
@@ -1166,7 +990,6 @@
         document.getElementById('view-' + viewId).classList.add('active');
         if (el) el.classList.add('active');
 
-        // Update Top Header Titles
         const titles = {
             'dashboard': ['Dashboard Overview', 'Real-Time Security Interception & Monitoring'],
             'interceptor': ['Live Interceptor Stream', 'Filterable Real-Time Event Feed'],
@@ -1182,7 +1005,8 @@
         }
 
         if (viewId === 'session-graph') {
-            setTimeout(() => cy.resize(), 100);
+            loadSessionsList();
+            setTimeout(() => cy.resize(), 150);
         }
     }
 
@@ -1289,16 +1113,94 @@
 
             document.getElementById('manual-tool-payload').innerText = JSON.stringify(res.result || res.tool_result || {}, null, 2);
 
-            if (res.graph_elements) {
-                cy.elements().remove();
-                cy.add(res.graph_elements.nodes);
-                cy.add(res.graph_elements.edges);
-                cy.layout({ name: 'grid' }).run();
-                document.getElementById('graph-matched-path-label').innerText = path ? `MATCHED DANGEROUS PATH: ${path}` : '';
-            }
-
             updateDashboard();
         });
+    }
+
+    // Load Available Sessions Dropdown for Session Graph
+    function loadSessionsList() {
+        fetch('/api/sessions')
+            .then(r => r.json())
+            .then(sessions => {
+                availableSessions = sessions;
+                let select = document.getElementById('session-graph-select');
+                select.innerHTML = '';
+
+                if (sessions.length === 0) {
+                    select.innerHTML = '<option value="">No sessions recorded yet</option>';
+                    return;
+                }
+
+                sessions.reverse().forEach(s => {
+                    let opt = document.createElement('option');
+                    opt.value = s.session_id;
+                    opt.innerText = `${s.session_id} (${s.turns} turns | Max SRI=${s.max_sri} | ${s.max_decision})`;
+                    select.appendChild(opt);
+                });
+
+                // Load first session graph by default
+                let targetId = sessions[0].session_id;
+                select.value = targetId;
+                loadSessionGraph(targetId);
+            });
+    }
+
+    // Render Full Session Graph for Selected Session ID
+    function loadSessionGraph(sessionId) {
+        if (!sessionId) return;
+
+        fetch('/api/session_graph/' + encodeURIComponent(sessionId))
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('sg-session-id').innerText = data.session_id;
+                document.getElementById('sg-max-sri').innerText = data.max_sri;
+
+                let maxDec = data.max_decision || 'SAFE';
+                document.getElementById('sg-max-decision').innerHTML = `<span class="badge badge-${maxDec}">${maxDec}</span>`;
+
+                let banner = document.getElementById('sg-path-banner');
+                let pathText = document.getElementById('sg-path-text');
+                if (data.matched_path) {
+                    banner.style.display = 'block';
+                    pathText.innerText = data.matched_path;
+                    document.getElementById('graph-matched-path-label').innerText = `MATCHED DANGEROUS PATH: ${data.matched_path}`;
+                } else {
+                    banner.style.display = 'none';
+                    document.getElementById('graph-matched-path-label').innerText = '';
+                }
+
+                // Render Timeline in Inspector Panel
+                let timeline = document.getElementById('sg-timeline');
+                timeline.innerHTML = '';
+                (data.entries || []).forEach((e, idx) => {
+                    let dec = e.decision || 'SAFE';
+                    let div = document.createElement('div');
+                    div.style.cssText = 'background: var(--panel-card-bg); padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 11px;';
+                    div.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong style="color: #fff;">Turn ${idx+1}: ${e.tool_name || 'tool'}.${e.action || 'action'}</strong>
+                            <span class="badge badge-${dec}">${dec}</span>
+                        </div>
+                        <div style="color: var(--text-muted); margin-top: 4px;">SRI Score: <strong>${e.sri || 0}</strong></div>
+                    `;
+                    timeline.appendChild(div);
+                });
+
+                // Cytoscape Render
+                cy.elements().remove();
+                cy.add(data.nodes || []);
+                cy.add(data.edges || []);
+
+                cy.layout({
+                    name: 'breadthfirst',
+                    directed: true,
+                    padding: 40,
+                    spacingFactor: 1.3
+                }).run();
+
+                cy.resize();
+                cy.fit();
+            });
     }
 
     // Render Stream Tables & Audit Logs

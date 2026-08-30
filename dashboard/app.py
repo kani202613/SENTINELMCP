@@ -81,6 +81,96 @@ def get_policies():
 
     return jsonify({"policies": policies, "catalog": catalog})
 
+@app.route("/api/sessions", methods=["GET"])
+def get_sessions():
+    entries = load_audit_entries()
+    sessions = {}
+    for e in entries:
+        sid = e.get("session_id") or e.get("workflow_id")
+        if sid:
+            if sid not in sessions:
+                sessions[sid] = {"session_id": sid, "turns": 0, "max_sri": 0, "max_decision": "SAFE", "matched_path": ""}
+            sessions[sid]["turns"] += 1
+            sri = e.get("sri", 0)
+            if sri > sessions[sid]["max_sri"]:
+                sessions[sid]["max_sri"] = sri
+            dec = e.get("decision", "SAFE")
+            if dec == "BLOCKED" or (dec == "SUSPICIOUS" and sessions[sid]["max_decision"] != "BLOCKED"):
+                sessions[sid]["max_decision"] = dec
+            path = e.get("matched_path") or e.get("graph_path", "")
+            if path:
+                sessions[sid]["matched_path"] = path
+
+    # Also include active in-memory sessions
+    for sid, hist in interceptor_instance.session_histories.items():
+        if sid not in sessions:
+            sessions[sid] = {"session_id": sid, "turns": len(hist), "max_sri": 0, "max_decision": "SAFE", "matched_path": ""}
+
+    return jsonify(list(sessions.values()))
+
+@app.route("/api/session_graph/<session_id>", methods=["GET"])
+def get_session_graph(session_id):
+    entries = [e for e in load_audit_entries() if (e.get("session_id") == session_id or e.get("workflow_id") == session_id)]
+    
+    if not entries:
+        hist = interceptor_instance.session_histories.get(session_id, [])
+        entries = hist
+
+    nodes = []
+    edges = []
+    matched_path = ""
+    max_sri = 0
+    max_decision = "SAFE"
+
+    for idx, h in enumerate(entries):
+        node_id = f"node_{idx+1}"
+        tool_name = h.get("tool_name", "unknown")
+        action = h.get("action", "action")
+        sri = h.get("sri", 0)
+        dec = h.get("decision", "SAFE")
+        if sri > max_sri: max_sri = sri
+        if dec == "BLOCKED" or (dec == "SUSPICIOUS" and max_decision != "BLOCKED"):
+            max_decision = dec
+        
+        path = h.get("matched_path") or h.get("graph_path") or (h.get("sri_details", {}).get("matched_path", "") if isinstance(h.get("sri_details"), dict) else "")
+        if path:
+            matched_path = path
+
+        label = f"Turn {idx+1}: {tool_name}.{action}"
+        nodes.append({
+            "data": {
+                "id": node_id,
+                "label": label,
+                "tool": tool_name,
+                "action": action,
+                "sri": sri,
+                "decision": dec
+            }
+        })
+
+        if idx > 0:
+            prev_id = f"node_{idx}"
+            is_danger = bool(path) or (h.get("graph_bonus", 0) > 0) or (h.get("sri_details", {}).get("graph_bonus", 0) > 0)
+            edges.append({
+                "data": {
+                    "id": f"edge_{idx}",
+                    "source": prev_id,
+                    "target": node_id,
+                    "dangerous": is_danger
+                }
+            })
+
+    return jsonify({
+        "session_id": session_id,
+        "nodes": nodes,
+        "edges": edges,
+        "matched_path": matched_path,
+        "max_sri": max_sri,
+        "max_decision": max_decision,
+        "total_turns": len(entries),
+        "entries": entries
+    })
+
 @app.route("/api/intercept", methods=["POST"])
 @app.route("/api/manual_test", methods=["POST"])
 def intercept_request():
@@ -152,15 +242,14 @@ def intercept_request():
     nodes = []
     edges = []
     
-    seen_nodes = set()
     for idx, h in enumerate(history):
-        node_id = f"{h['tool_name']}.{h['action']}"
-        if node_id not in seen_nodes:
-            seen_nodes.add(node_id)
-            nodes.append({"data": {"id": node_id, "label": node_id}})
+        node_id = f"node_{idx+1}"
+        tool_action = f"{h['tool_name']}.{h['action']}"
+        label = f"Turn {idx+1}: {tool_action}"
+        nodes.append({"data": {"id": node_id, "label": label, "tool": h['tool_name'], "action": h['action']}})
         
         if idx > 0:
-            prev_id = f"{history[idx-1]['tool_name']}.{history[idx-1]['action']}"
+            prev_id = f"node_{idx}"
             edge_id = f"e_{idx}"
             is_danger = (res.get("sri_details", {}).get("matched_path") != "")
             edges.append({
