@@ -58,7 +58,10 @@ def get_stats():
 @app.route("/api/audit_stream", methods=["GET"])
 def get_audit_stream():
     entries = load_audit_entries()
-    return jsonify(entries[-50:])
+    limit = request.args.get("limit", 100, type=int)
+    if limit > 0:
+        return jsonify(entries[-limit:])
+    return jsonify(entries)
 
 @app.route("/api/policies", methods=["GET"])
 def get_policies():
