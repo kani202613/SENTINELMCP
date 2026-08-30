@@ -136,13 +136,14 @@ def get_session_graph(session_id):
         if path:
             matched_path = path
 
-        label = f"Turn {idx+1}: {tool_name}.{action}"
+        label = f"{tool_name}\n{action}"
         nodes.append({
             "data": {
                 "id": node_id,
                 "label": label,
                 "tool": tool_name,
                 "action": action,
+                "turn": idx + 1,
                 "sri": sri,
                 "decision": dec
             }
