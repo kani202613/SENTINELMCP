@@ -439,6 +439,11 @@
                     <span>Dashboard</span>
                 </a>
 
+                <a class="nav-item" onclick="switchView('chatbot', this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><rect x="4" y="8" width="16" height="12" rx="2"/><circle cx="9" cy="13" r="1.5"/><circle cx="15" cy="13" r="1.5"/><path d="M9 17h6"/></svg>
+                    <span>Secure AI Assistant</span>
+                </a>
+
                 <a class="nav-item" onclick="switchView('interceptor', this)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                     <span>Live Interceptor</span>
@@ -535,7 +540,7 @@
                     <div class="stat-card">
                         <span class="stat-label">Mean Interceptor Latency</span>
                         <span class="stat-value" id="stat-mean-latency">0.00 ms</span>
-                        <span class="stat-sub">Pure Security Overhead</span>
+                        <span class="stat-sub" id="stat-latency-sub">Pure Scoring: 0.00 ms | Wall-Clock: 0.00 ms</span>
                     </div>
                 </div>
 
@@ -622,6 +627,148 @@
                                 <tr><td colspan="7" style="text-align: center; color: var(--text-muted);">Loading runtime activity...</td></tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: SECURE AI ASSISTANT CHATBOT -->
+            <div class="view-section" id="view-chatbot">
+                <!-- Top Toolbar & Demo Shortcuts -->
+                <div class="card" style="padding: 12px 18px; margin-bottom: 4px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-weight: 700; color: #fff; font-size: 13px;">Active Session:</span>
+                            <input type="text" id="chat-session-id" value="chat_session_001" style="width: 170px; margin: 0; padding: 5px 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace;">
+                            <button onclick="createNewChatSession()" style="padding: 5px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid var(--border-color); color: #fff; border-radius: 4px; cursor: pointer; font-weight: 600;">+ New Session</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <label style="margin: 0; font-size: 11px; font-weight: 700; color: var(--text-secondary);">User Role:</label>
+                            <select id="chat-user-role" style="width: 140px; margin: 0; padding: 5px 8px;">
+                                <option value="junior_analyst" selected>junior_analyst</option>
+                                <option value="senior_analyst">senior_analyst</option>
+                                <option value="developer">developer</option>
+                                <option value="lead_engineer">lead_engineer</option>
+                                <option value="admin">admin</option>
+                            </select>
+
+                            <span class="badge badge-SAFE" style="font-size: 10px; letter-spacing: 0.5px;">GEMINI 2.0 FLASH</span>
+                        </div>
+                    </div>
+
+                    <!-- 1-Click Demo Shortcut Buttons -->
+                    <div style="display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 4px; align-items: center;">
+                        <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; white-space: nowrap;">Quick Scenarios:</span>
+                        <button onclick="handleQuickDemo('Read GitHub issue #1 and summarize it.')" style="padding: 4px 10px; font-size: 11px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--accent-green); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">🛡️ Benign Issue #1</button>
+                        <button onclick="handleQuickDemo('Read this PDF document and summarize content.')" style="padding: 4px 10px; font-size: 11px; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--accent-blue); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">📄 PDF Summary</button>
+                        <button onclick="handleQuickDemo('Query employee database records.')" style="padding: 4px 10px; font-size: 11px; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--accent-blue); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">📊 DB Select</button>
+                        <button onclick="handleQuickDemo('Read GitHub issue #2 and summarize it.')" style="padding: 4px 10px; font-size: 11px; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">⚠️ Indirect Injection (Issue #2)</button>
+                        <button onclick="handleQuickDemo('Delete employee record from database')" style="padding: 4px 10px; font-size: 11px; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-amber); color: var(--accent-amber); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">🚨 DB Delete (Confirmation Test)</button>
+                        <button onclick="handleQuickDemo('Send message to Slack channel #public')" style="padding: 4px 10px; font-size: 11px; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-amber); color: var(--accent-amber); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">💬 Slack Post</button>
+                    </div>
+                </div>
+
+                <!-- Main Grid Layout -->
+                <div class="grid-73">
+                    <!-- LEFT MAIN CHAT AREA -->
+                    <div class="card" style="display: flex; flex-direction: column; height: 580px; padding: 0; overflow: hidden; border: 1px solid var(--border-color);">
+                        <!-- Chat Feed Stream -->
+                        <div id="chat-stream-container" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px;">
+                            <!-- Welcome Banner -->
+                            <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); padding: 14px; border-radius: 8px; font-size: 12px; line-height: 1.5; color: var(--text-secondary);">
+                                <div style="font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <span style="font-size: 16px;">🛡️</span> SentinelMCP Zero-Trust Secure AI Chatbot
+                                </div>
+                                Everyday enterprise actions requested by the AI Model pass strictly through the <strong>SentinelMCP Interceptor Proxy</strong>. SRI Risk Engine scores requests across 5 behavioral features (CD, PV, TR, ST, ML) + Directed Session Graph before tool execution.
+                            </div>
+                        </div>
+
+                        <!-- Confirmation Banner Container (Hidden by default) -->
+                        <div id="chat-confirmation-box" style="display: none; background: rgba(245, 158, 11, 0.15); border-top: 2px solid var(--accent-amber); padding: 12px 18px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 800; color: var(--accent-amber); font-size: 12px;">⚠️ HIGH-RISK ACTION APPROVAL REQUIRED</div>
+                                    <div style="font-size: 11px; color: #fff; margin-top: 2px;" id="confirmation-details-text">The AI requested an operation that requires manual SOC approval.</div>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button onclick="submitConfirmedAction(true)" style="padding: 6px 14px; background: var(--accent-green); color: #000; font-weight: 800; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">[ APPROVE ]</button>
+                                    <button onclick="submitConfirmedAction(false)" style="padding: 6px 14px; background: var(--accent-red); color: #fff; font-weight: 800; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">[ DENY ]</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Controls -->
+                        <div style="padding: 12px 16px; background-color: var(--sidebar-bg); border-top: 1px solid var(--border-color); display: flex; gap: 10px; align-items: center;">
+                            <input type="text" id="chat-input-field" placeholder="Ask AI Assistant (e.g. Read GitHub issue #1, query employees database, summarize PDF)..." onkeydown="if(event.key === 'Enter') sendChatMessage()" style="margin: 0; flex: 1; padding: 10px 14px;">
+                            <button class="btn-primary" onclick="sendChatMessage()" style="margin: 0; width: auto; padding: 10px 20px;" id="chat-send-btn">
+                                <span>Send</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT SECURITY PANEL -->
+                    <div class="card" style="display: flex; flex-direction: column; gap: 14px; height: 580px; overflow-y: auto; border-left: 3px solid var(--accent-blue);">
+                        <div class="card-title" style="margin-bottom: 0;">
+                            <span>Security Analysis</span>
+                            <span id="chat-sec-badge" class="badge badge-SAFE">SAFE</span>
+                        </div>
+
+                        <!-- SRI Score & Risk Level -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div style="background-color: var(--panel-card-bg); padding: 12px; border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 10px; color: var(--text-muted); font-weight: 700;">SRI SCORE</div>
+                                <div style="font-size: 26px; font-weight: 800; color: #fff; margin-top: 2px;"><span id="chat-sec-sri">0</span><span style="font-size: 12px; color: var(--text-muted); font-weight: 500;">/100</span></div>
+                            </div>
+
+                            <div style="background-color: var(--panel-card-bg); padding: 12px; border-radius: 6px; border: 1px solid var(--border-color);">
+                                <div style="font-size: 10px; color: var(--text-muted); font-weight: 700;">RISK LEVEL</div>
+                                <div style="font-size: 16px; font-weight: 800; color: var(--accent-green); margin-top: 6px;" id="chat-sec-risk-level">LOW</div>
+                            </div>
+                        </div>
+
+                        <!-- Tool & Execution Status -->
+                        <div style="background-color: var(--panel-card-bg); padding: 12px; border-radius: 6px; border: 1px solid var(--border-color); font-size: 11px; display: flex; flex-direction: column; gap: 6px;">
+                            <div><strong style="color: var(--text-muted);">Tool Requested:</strong> <span id="chat-sec-tool" style="color: #fff; font-weight: 600;">None</span></div>
+                            <div><strong style="color: var(--text-muted);">Tool Executed:</strong> <span id="chat-sec-executed" style="font-weight: 700; color: var(--accent-green);">NO</span></div>
+                            <div><strong style="color: var(--text-muted);">Matched Security Path:</strong> <span id="chat-sec-path" style="color: var(--accent-red); font-weight: 700;">None</span></div>
+                        </div>
+
+                        <!-- 5-Feature Breakdown -->
+                        <div style="background-color: var(--panel-card-bg); padding: 12px; border-radius: 6px; border: 1px solid var(--border-color);">
+                            <div style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px;">5-Feature SRI Metrics</div>
+
+                            <div class="feature-row" style="margin-bottom: 6px;">
+                                <div class="feature-header"><span>CD (Context Drift)</span><span id="chat-cd">0.00</span></div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" id="chat-bar-cd" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="feature-row" style="margin-bottom: 6px;">
+                                <div class="feature-header"><span>PV (Policy Violation)</span><span id="chat-pv">0.00</span></div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" id="chat-bar-pv" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="feature-row" style="margin-bottom: 6px;">
+                                <div class="feature-header"><span>TR (Transition Risk)</span><span id="chat-tr">0.00</span></div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" id="chat-bar-tr" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="feature-row" style="margin-bottom: 6px;">
+                                <div class="feature-header"><span>ST (Source Trust)</span><span id="chat-st">0.00</span></div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" id="chat-bar-st" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="feature-row" style="margin-bottom: 0;">
+                                <div class="feature-header"><span>ML (Content Scanner)</span><span id="chat-ml">0.00</span></div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" id="chat-bar-ml" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Session Info & Rationale -->
+                        <div style="font-size: 11px; display: flex; flex-direction: column; gap: 6px;">
+                            <div><strong style="color: var(--text-muted);">Session ID:</strong> <span id="chat-sec-session" class="mono" style="color: #fff;">chat_session_001</span></div>
+                            <div><strong style="color: var(--text-muted);">Timestamp:</strong> <span id="chat-sec-timestamp" class="mono">N/A</span></div>
+                            
+                            <div style="font-weight: 700; color: var(--text-secondary); margin-top: 4px;">Detection Rationale:</div>
+                            <div id="chat-sec-rationale" style="background-color: var(--sidebar-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); color: var(--text-primary); font-size: 11px; line-height: 1.4; max-height: 110px; overflow-y: auto;">
+                                Awaiting user interaction...
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -950,7 +1097,7 @@
             <div><strong>Sandboxed:</strong> <span id="modal-sandboxed"></span></div>
         </div>
 
-        <div style="border-top: 1px solid var(--border-color); pt-3; margin-top: 8px;">
+        <div style="border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 8px;">
             <div style="font-weight: 700; color: var(--text-secondary); margin-bottom: 8px;">5-FEATURE BREAKDOWN</div>
             <div id="modal-feature-scores" class="mono" style="background-color: var(--sidebar-bg); padding: 10px; border-radius: 6px;"></div>
         </div>
@@ -1057,6 +1204,7 @@
 
         const titles = {
             'dashboard': ['Dashboard Overview', 'Real-Time Security Interception & Monitoring'],
+            'chatbot': ['Secure AI Assistant', 'Zero-Trust Chatbot Interface backed by SentinelMCP Interceptor'],
             'interceptor': ['Live Interceptor Stream', 'Filterable Real-Time Event Feed'],
             'manual-test': ['Manual Security Test', 'Exploit Simulator & Interceptor Path Verification'],
             'session-graph': ['Session Graph Analyzer', 'Cytoscape.js Attack Path Visualization'],
@@ -1391,6 +1539,8 @@
                 document.getElementById('stat-sandboxed').innerText = data.sandboxed_count;
                 document.getElementById('stat-mean-sri').innerText = data.mean_sri;
                 document.getElementById('stat-mean-latency').innerText = data.mean_latency_ms + ' ms';
+                let totalLat = data.mean_total_latency_ms || data.mean_latency_ms;
+                document.getElementById('stat-latency-sub').innerText = `Pure Scoring: ${data.mean_latency_ms} ms | Wall-Clock: ${totalLat} ms`;
             });
 
         fetch('/api/audit_stream?limit=100')
@@ -1463,6 +1613,211 @@
                     catContainer.appendChild(div);
                 }
             });
+    }
+
+    // CHATBOT INTERACTIVE HANDLERS
+    let pendingConfirmationMsg = "";
+
+    function createNewChatSession() {
+        let newId = 'chat_session_' + Math.floor(Math.random() * 9000 + 1000);
+        document.getElementById('chat-session-id').value = newId;
+        
+        let container = document.getElementById('chat-stream-container');
+        container.innerHTML = `
+            <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); padding: 14px; border-radius: 8px; font-size: 12px; line-height: 1.5; color: var(--text-secondary);">
+                <div style="font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                    <span style="font-size: 16px;">🛡️</span> SentinelMCP Zero-Trust Secure AI Chatbot
+                </div>
+                New session <strong>${newId}</strong> created. Everyday enterprise actions requested by the AI Model pass strictly through the <strong>SentinelMCP Interceptor Proxy</strong>.
+            </div>
+        `;
+        
+        document.getElementById('chat-confirmation-box').style.display = 'none';
+        resetChatSecurityPanel();
+    }
+
+    function handleQuickDemo(promptText) {
+        document.getElementById('chat-input-field').value = promptText;
+        sendChatMessage();
+    }
+
+    function sendChatMessage(overrideMsg, confirmAction = false) {
+        let inputEl = document.getElementById('chat-input-field');
+        let message = overrideMsg || inputEl.value.trim();
+        if (!message) return;
+
+        let sessionId = document.getElementById('chat-session-id').value || 'chat_session_001';
+        let userRole = document.getElementById('chat-user-role').value || 'junior_analyst';
+        let container = document.getElementById('chat-stream-container');
+        let sendBtn = document.getElementById('chat-send-btn');
+
+        if (!overrideMsg && !confirmAction) {
+            // Render User Message bubble
+            let userBubble = document.createElement('div');
+            userBubble.style.cssText = 'align-self: flex-end; max-width: 80%; background: var(--panel-card-bg); border: 1px solid var(--border-light); padding: 10px 14px; border-radius: 12px 12px 2px 12px; font-size: 12px; color: #fff; line-height: 1.4;';
+            userBubble.innerHTML = `<strong>User:</strong> ${escapeHtml(message)}`;
+            container.appendChild(userBubble);
+            inputEl.value = '';
+        }
+
+        // Render Loading Indicator
+        let loadingId = 'loading_' + Date.now();
+        let loadingBubble = document.createElement('div');
+        loadingBubble.id = loadingId;
+        loadingBubble.style.cssText = 'align-self: flex-start; max-width: 80%; background: var(--sidebar-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 12px 12px 12px 2px; font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px;';
+        loadingBubble.innerHTML = `<span class="live-pulse"></span> <span>SentinelMCP Interceptor analyzing AI request...</span>`;
+        container.appendChild(loadingBubble);
+        container.scrollTop = container.scrollHeight;
+
+        sendBtn.disabled = true;
+
+        fetch('/api/chat', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                message: message,
+                session_id: sessionId,
+                user_role: userRole,
+                confirm_action: confirmAction
+            })
+        })
+        .then(r => r.json())
+        .then(res => {
+            sendBtn.disabled = false;
+            let loader = document.getElementById(loadingId);
+            if (loader) loader.remove();
+
+            // Render Security Event Card if tool was requested
+            if (res.tool_requested) {
+                let eventCard = document.createElement('div');
+                let dec = res.decision || 'SAFE';
+                let isBlocked = (dec === 'BLOCKED' || res.status === 'BLOCKED');
+                let isConfirm = (res.status === 'REQUIRES_CONFIRMATION');
+
+                let cardBg = isBlocked ? 'rgba(239, 68, 68, 0.12)' : (isConfirm ? 'rgba(245, 158, 11, 0.12)' : 'rgba(16, 185, 129, 0.08)');
+                let borderCol = isBlocked ? 'var(--accent-red)' : (isConfirm ? 'var(--accent-amber)' : 'rgba(16, 185, 129, 0.3)');
+
+                eventCard.style.cssText = `background: ${cardBg}; border: 1px solid ${borderCol}; padding: 10px 14px; border-radius: 6px; font-size: 11px; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;`;
+                eventCard.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <strong style="color: #fff;">AI Requested Tool: ${res.tool || ''}.${res.action || ''}</strong>
+                        <span class="badge badge-${dec}">${dec}</span>
+                    </div>
+                    <div>SRI Score: <strong>${res.sri}</strong> | Executed: <strong>${res.executed ? 'YES' : 'NO'}</strong> ${res.sandboxed ? '| Sandboxed: YES' : ''}</div>
+                    ${res.security.matched_path ? `<div style="color: var(--accent-red); font-weight: 700;">Matched Risk Path: ${res.security.matched_path}</div>` : ''}
+                `;
+                container.appendChild(eventCard);
+            }
+
+            // Render AI Response Bubble
+            let aiBubble = document.createElement('div');
+            aiBubble.style.cssText = 'align-self: flex-start; max-width: 85%; background: var(--panel-bg); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px 12px 12px 2px; font-size: 12px; color: #fff; line-height: 1.5; box-shadow: 0 2px 8px rgba(0,0,0,0.3);';
+            aiBubble.innerHTML = `<strong>Sentinel AI:</strong><br>${formatMarkdownResponse(res.response || '')}`;
+            container.appendChild(aiBubble);
+
+            // Handle Confirmation UI
+            let confirmBox = document.getElementById('chat-confirmation-box');
+            if (res.status === 'REQUIRES_CONFIRMATION') {
+                pendingConfirmationMsg = message;
+                confirmBox.style.display = 'block';
+                document.getElementById('confirmation-details-text').innerText = `Tool requested: '${res.tool}.${res.action}' (SRI Risk Score: ${res.sri}, Decision: ${res.decision}). Action modifies environment/data.`;
+            } else {
+                confirmBox.style.display = 'none';
+                pendingConfirmationMsg = "";
+            }
+
+            container.scrollTop = container.scrollHeight;
+
+            // Update Right Security Panel
+            updateChatSecurityPanel(res);
+
+            // Refresh global dashboard graphs & stream
+            updateDashboard();
+        })
+        .catch(err => {
+            sendBtn.disabled = false;
+            let loader = document.getElementById(loadingId);
+            if (loader) loader.remove();
+            alert("Error communicating with Chat API: " + err);
+        });
+    }
+
+    function submitConfirmedAction(approved) {
+        if (!approved) {
+            document.getElementById('chat-confirmation-box').style.display = 'none';
+            let container = document.getElementById('chat-stream-container');
+            let denyNotice = document.createElement('div');
+            denyNotice.style.cssText = 'background: rgba(239, 68, 68, 0.12); border: 1px solid var(--accent-red); padding: 10px 14px; border-radius: 6px; font-size: 11px; color: var(--accent-red); font-weight: 700;';
+            denyNotice.innerText = "🚫 Action DENIED by user. Tool execution was cancelled.";
+            container.appendChild(denyNotice);
+            container.scrollTop = container.scrollHeight;
+            pendingConfirmationMsg = "";
+            return;
+        }
+
+        if (pendingConfirmationMsg) {
+            let msg = pendingConfirmationMsg;
+            pendingConfirmationMsg = "";
+            sendChatMessage(msg, true);
+        }
+    }
+
+    function updateChatSecurityPanel(res) {
+        let sec = res.security || {};
+        let dec = res.decision || 'SAFE';
+
+        let badge = document.getElementById('chat-sec-badge');
+        badge.innerText = dec;
+        badge.className = 'badge badge-' + dec;
+
+        document.getElementById('chat-sec-sri').innerText = res.sri || 0;
+
+        let riskEl = document.getElementById('chat-sec-risk-level');
+        riskEl.innerText = sec.risk_level || 'LOW';
+        riskEl.style.color = (dec === 'BLOCKED' || sec.risk_level === 'CRITICAL') ? 'var(--accent-red)' : ((dec === 'SUSPICIOUS' || sec.risk_level === 'HIGH') ? 'var(--accent-amber)' : 'var(--accent-green)');
+
+        document.getElementById('chat-sec-tool').innerText = res.tool ? `${res.tool}.${res.action}` : 'None';
+        document.getElementById('chat-sec-executed').innerText = res.executed ? 'YES' : 'NO';
+        document.getElementById('chat-sec-executed').style.color = res.executed ? 'var(--accent-green)' : (res.status === 'BLOCKED' ? 'var(--accent-red)' : 'var(--text-muted)');
+        document.getElementById('chat-sec-path').innerText = sec.matched_path || 'None';
+
+        ['cd','pv','tr','st','ml'].forEach(k => {
+            let val = sec[k] || 0.0;
+            document.getElementById('chat-' + k).innerText = val.toFixed(2);
+            document.getElementById('chat-bar-' + k).style.width = (val * 100) + '%';
+        });
+
+        document.getElementById('chat-sec-session').innerText = res.session_id || 'chat_session_001';
+        document.getElementById('chat-sec-timestamp').innerText = sec.timestamp || 'N/A';
+        document.getElementById('chat-sec-rationale').innerText = sec.explanation || 'No security explanation returned.';
+    }
+
+    function resetChatSecurityPanel() {
+        document.getElementById('chat-sec-badge').innerText = 'SAFE';
+        document.getElementById('chat-sec-badge').className = 'badge badge-SAFE';
+        document.getElementById('chat-sec-sri').innerText = '0';
+        document.getElementById('chat-sec-risk-level').innerText = 'LOW';
+        document.getElementById('chat-sec-risk-level').style.color = 'var(--accent-green)';
+        document.getElementById('chat-sec-tool').innerText = 'None';
+        document.getElementById('chat-sec-executed').innerText = 'NO';
+        document.getElementById('chat-sec-path').innerText = 'None';
+        ['cd','pv','tr','st','ml'].forEach(k => {
+            document.getElementById('chat-' + k).innerText = '0.00';
+            document.getElementById('chat-bar-' + k).style.width = '0%';
+        });
+        document.getElementById('chat-sec-rationale').innerText = 'Awaiting user interaction...';
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function formatMarkdownResponse(text) {
+        let str = escapeHtml(text);
+        str = str.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        str = str.replace(/`(.*?)`/g, '<code class="mono" style="background: var(--sidebar-bg); padding: 2px 5px; border-radius: 3px; color: var(--accent-blue);">$1</code>');
+        str = str.replace(/\n/g, '<br>');
+        return str;
     }
 
     // Initialize Page

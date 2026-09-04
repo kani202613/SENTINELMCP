@@ -21,7 +21,8 @@ class AuditLogger:
         args: dict,
         sri_res: dict,
         scoring_latency_ms: float,
-        tool_result: dict
+        tool_result: dict,
+        total_latency_ms: float = 0.0
     ) -> Dict[str, Any]:
         """
         Constructs and records audit log entry into JSON Lines format (.jsonl).
@@ -47,6 +48,7 @@ class AuditLogger:
             "injection_bonus": sri_res.get("injection_bonus", 0),
             "hysteresis_applied": sri_res.get("hysteresis_applied", False),
             "scoring_latency_ms": scoring_latency_ms,
+            "total_latency_ms": total_latency_ms or scoring_latency_ms,
             "sandboxed": tool_result.get("sandboxed", False) if isinstance(tool_result, dict) else False,
             "tool_result": tool_result
         }
@@ -98,5 +100,5 @@ class AuditLogger:
 
 _audit_logger_instance = AuditLogger()
 
-def log_audit_event(session_id: str, user_role: str, tool_name: str, action: str, args: dict, sri_res: dict, scoring_latency_ms: float, tool_result: dict) -> dict:
-    return _audit_logger_instance.log_event(session_id, user_role, tool_name, action, args, sri_res, scoring_latency_ms, tool_result)
+def log_audit_event(session_id: str, user_role: str, tool_name: str, action: str, args: dict, sri_res: dict, scoring_latency_ms: float, tool_result: dict, total_latency_ms: float = 0.0) -> dict:
+    return _audit_logger_instance.log_event(session_id, user_role, tool_name, action, args, sri_res, scoring_latency_ms, tool_result, total_latency_ms)

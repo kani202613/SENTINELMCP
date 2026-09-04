@@ -50,6 +50,7 @@ class SentinelInterceptor:
 
         history = self.session_histories[session_id]
 
+        t_sri_start = time.perf_counter()
         sri_result = calculate_sri(
             user_prompt=context,
             tool_name=tool_name,
@@ -60,6 +61,7 @@ class SentinelInterceptor:
             source_trust_level=source_trust,
             session_history=history
         )
+        scoring_latency_ms = (time.perf_counter() - t_sri_start) * 1000.0
 
         decision = sri_result["decision"]
         sri_score = sri_result["sri"]
@@ -89,7 +91,7 @@ class SentinelInterceptor:
                 "explanation": sri_result["explanation"]
             }
 
-        elapsed_ms = (time.perf_counter() - start_time) * 1000.0
+        total_latency_ms = (time.perf_counter() - start_time) * 1000.0
 
         history.append({
             "tool_name": tool_name,
@@ -106,7 +108,8 @@ class SentinelInterceptor:
             action=action,
             args=tool_args,
             sri_res=sri_result,
-            scoring_latency_ms=elapsed_ms,
+            scoring_latency_ms=scoring_latency_ms,
+            total_latency_ms=total_latency_ms,
             tool_result=execution_result or {}
         )
 
@@ -114,7 +117,9 @@ class SentinelInterceptor:
             "status": "SUCCESS" if decision != "BLOCKED" else "BLOCKED",
             "decision": decision,
             "sri_details": sri_result,
-            "latency_ms": elapsed_ms,
+            "scoring_latency_ms": scoring_latency_ms,
+            "latency_ms": scoring_latency_ms,
+            "total_latency_ms": total_latency_ms,
             "sandboxed": sandboxed,
             "result": execution_result,
             "explanation": sri_result["explanation"]

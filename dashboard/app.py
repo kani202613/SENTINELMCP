@@ -12,9 +12,11 @@ from flask import Flask, jsonify, render_template, request
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from sentinel.interceptor import SentinelInterceptor
+from agent.chat_service import SecureChatService
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 interceptor_instance = SentinelInterceptor(audit_log_path="data/m5_audit_log.jsonl")
+chat_service = SecureChatService(interceptor=interceptor_instance)
 
 def load_audit_entries() -> list:
     log_path = "data/m5_audit_log.jsonl"
@@ -43,16 +45,19 @@ def get_stats():
     
     sris = [e.get("sri", 0) for e in entries]
     latencies = [e.get("scoring_latency_ms", 0.0) for e in entries]
+    total_latencies = [e.get("total_latency_ms", e.get("scoring_latency_ms", 0.0)) for e in entries]
     
     mean_sri = round(float(np.mean(sris)), 1) if sris else 0.0
     mean_latency = round(float(np.mean(latencies)), 2) if latencies else 0.0
+    mean_total_latency = round(float(np.mean(total_latencies)), 2) if total_latencies else 0.0
 
     return jsonify({
         "total_requests": total_requests,
         "blocked_count": blocked_count,
         "sandboxed_count": sandboxed_count,
         "mean_sri": mean_sri,
-        "mean_latency_ms": mean_latency
+        "mean_latency_ms": mean_latency,
+        "mean_total_latency_ms": mean_total_latency
     })
 
 @app.route("/api/audit_stream", methods=["GET"])
@@ -265,6 +270,30 @@ def intercept_request():
     res["graph_elements"] = {"nodes": nodes, "edges": edges}
     res["request_echo"] = req
     return jsonify(res)
+
+@app.route("/api/chat", methods=["POST"])
+def chat():
+    data = request.json or {}
+    message = data.get("message", "").strip()
+    session_id = data.get("session_id", "chat_session_001")
+    user_role = data.get("user_role", "junior_analyst")
+    confirm_action = data.get("confirm_action", False)
+
+    if not message:
+        return jsonify({
+            "status": "ERROR",
+            "message": "Empty user message.",
+            "response": "Please enter a message or select a demo prompt."
+        }), 400
+
+    result = chat_service.process_user_message(
+        message=message,
+        session_id=session_id,
+        user_role=user_role,
+        confirm_action=confirm_action
+    )
+
+    return jsonify(result)
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=False)
