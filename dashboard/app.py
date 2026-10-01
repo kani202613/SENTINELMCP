@@ -278,22 +278,76 @@ def chat():
     session_id = data.get("session_id", "chat_session_001")
     user_role = data.get("user_role", "junior_analyst")
     confirm_action = data.get("confirm_action", False)
+    attachment = data.get("attachment", None)
 
-    if not message:
+    if not message and not attachment:
         return jsonify({
             "status": "ERROR",
             "message": "Empty user message.",
-            "response": "Please enter a message or select a demo prompt."
+            "response": "Please enter a message, upload a file, or select a scenario shortcut."
         }), 400
 
     result = chat_service.process_user_message(
-        message=message,
+        message=message or f"Analyze uploaded file: {attachment.get('filename') if attachment else 'attachment'}",
         session_id=session_id,
         user_role=user_role,
-        confirm_action=confirm_action
+        confirm_action=confirm_action,
+        attachment=attachment
     )
 
     return jsonify(result)
+
+@app.route("/api/chat/upload", methods=["POST"])
+def chat_upload():
+    if "file" not in request.files:
+        return jsonify({"status": "ERROR", "message": "No file uploaded."}), 400
+
+    file = request.files["file"]
+    if not file or file.filename == "":
+        return jsonify({"status": "ERROR", "message": "Empty file."}), 400
+
+    filename = file.filename
+    upload_dir = "data/uploads"
+    os.makedirs(upload_dir, exist_ok=True)
+    file_path = os.path.join(upload_dir, filename)
+    file.save(file_path)
+
+    # Read content preview
+    try:
+        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+    except Exception as e:
+        content = f"[Binary/Unreadable file content: {e}]"
+
+    size_kb = round(os.path.getsize(file_path) / 1024, 1)
+    file_type = filename.split(".")[-1].upper() if "." in filename else "FILE"
+
+    attachment = {
+        "filename": filename,
+        "filepath": file_path,
+        "size_kb": size_kb,
+        "file_type": file_type,
+        "content": content
+    }
+
+    return jsonify({
+        "status": "SUCCESS",
+        "message": f"Successfully uploaded '{filename}' ({size_kb} KB).",
+        "attachment": attachment
+    })
+
+@app.route("/api/chat/clear", methods=["POST"])
+def chat_clear():
+    data = request.json or {}
+    session_id = data.get("session_id", "chat_session_001")
+    chat_service.clear_conversation(session_id)
+    return jsonify({"status": "SUCCESS", "message": f"Cleared session '{session_id}'."})
+
+@app.route("/api/chat/export", methods=["GET"])
+def chat_export():
+    session_id = request.args.get("session_id", "chat_session_001")
+    history = chat_service.conversations.get(session_id, [])
+    return jsonify({"session_id": session_id, "history": history})
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=False)
