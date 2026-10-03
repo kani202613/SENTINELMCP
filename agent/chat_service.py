@@ -444,7 +444,7 @@ class SecureChatService:
             }
 
         # Check GitHub Issue
-        if "github" in msg_lower or "issue" in msg_lower:
+        if "github" in msg_lower or "issue" in msg_lower or "commit" in msg_lower:
             issue_id = 2 if "2" in msg_lower or "#2" in msg_lower else 1
             action = "delete_branch" if "delete" in msg_lower and "branch" in msg_lower else "read_issue"
             return {
@@ -464,7 +464,7 @@ class SecureChatService:
             }
 
         # Check Database
-        if "database" in msg_lower or "sql" in msg_lower or "employee" in msg_lower or "query" in msg_lower or "table" in msg_lower:
+        if "database" in msg_lower or "sql" in msg_lower or "employee" in msg_lower or "query" in msg_lower or "table" in msg_lower or "session" in msg_lower or "revoke" in msg_lower:
             if "delete" in msg_lower or "drop" in msg_lower:
                 return {
                     "tool_name": "database_tool",
