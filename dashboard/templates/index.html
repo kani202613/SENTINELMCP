@@ -80,12 +80,12 @@
         .brand-logo {
             width: 34px;
             height: 34px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            background-color: #3b82f6;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 12px var(--accent-blue-glow);
+            box-shadow: none;
         }
 
         .brand-logo svg { width: 20px; height: 20px; fill: #fff; }
@@ -130,14 +130,14 @@
             background-color: rgba(59, 130, 246, 0.15);
             color: var(--accent-blue);
             font-weight: 600;
-            border-left: 3px solid var(--accent-blue);
+            border-left: 1px solid var(--border-color);
         }
         .nav-item svg { width: 18px; height: 18px; stroke-width: 2; }
 
         .sidebar-footer {
             padding: 16px;
             border-top: 1px solid var(--border-color);
-            background-color: rgba(0,0,0,0.15);
+            background-color: var(--panel-bg);
         }
 
         .system-status {
@@ -158,7 +158,7 @@
             height: 8px;
             border-radius: 50%;
             background-color: var(--accent-green);
-            box-shadow: 0 0 8px var(--accent-green);
+            
         }
 
         /* MAIN CONTENT AREA */
@@ -202,7 +202,7 @@
             outline: none;
             transition: all 0.2s;
         }
-        .search-box input:focus { border-color: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue-glow); }
+        .search-box input:focus { border-color: var(--accent-blue);  }
         .search-box svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; stroke: var(--text-muted); }
 
         .btn-header {
@@ -225,8 +225,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            background-color: rgba(16, 185, 129, 0.12);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            
+            border: 1px solid var(--border-color);
             color: var(--accent-green);
             padding: 5px 12px;
             border-radius: 20px;
@@ -311,13 +311,13 @@
         .badge-SAFE { background-color: rgba(16, 185, 129, 0.18); color: var(--accent-green); border: 1px solid var(--accent-green); }
         .badge-MONITOR { background-color: rgba(59, 130, 246, 0.18); color: var(--accent-blue); border: 1px solid var(--accent-blue); }
         .badge-SUSPICIOUS { background-color: rgba(245, 158, 11, 0.18); color: var(--accent-amber); border: 1px solid var(--accent-amber); }
-        .badge-BLOCKED { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red); box-shadow: 0 0 10px var(--accent-red-glow); }
+        .badge-BLOCKED { background-color: rgba(239, 68, 68, 0.2); color: var(--accent-red); border: 1px solid var(--accent-red);  }
 
         /* FEATURE PROGRESS BARS */
         .feature-row { margin-bottom: 12px; }
         .feature-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; margin-bottom: 5px; color: var(--text-secondary); }
         .progress-bar-bg { background-color: #1a253c; height: 7px; border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 4px; transition: width 0.4s ease; }
+        .progress-bar-fill { height: 100%; background-color: #3b82f6; border-radius: 4px; transition: width 0.4s ease; }
 
         /* TABLES */
         .table-responsive { width: 100%; overflow-x: auto; }
@@ -342,12 +342,12 @@
             outline: none;
             transition: border-color 0.2s;
         }
-        input:focus, select:focus, textarea:focus { border-color: var(--accent-blue); box-shadow: 0 0 6px var(--accent-blue-glow); }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent-blue);  }
 
         .btn-primary {
             margin-top: 16px;
             padding: 11px 18px;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            background-color: #3b82f6;
             color: #fff;
             border: none;
             border-radius: var(--radius-sm);
@@ -356,10 +356,10 @@
             letter-spacing: 0.4px;
             cursor: pointer;
             width: 100%;
-            box-shadow: 0 4px 12px var(--accent-blue-glow);
+            
             transition: all 0.2s ease;
         }
-        .btn-primary:hover { background: linear-gradient(135deg, #2563eb, #1d4ed8); transform: translateY(-1px); }
+        .btn-primary:hover { background-color: #2563eb; transform: translateY(-1px); }
 
         /* CYTOSCAPE CANVAS */
         #cy {
@@ -441,7 +441,7 @@
 
                 <a class="nav-item" onclick="switchView('chatbot', this)">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><rect x="4" y="8" width="16" height="12" rx="2"/><circle cx="9" cy="13" r="1.5"/><circle cx="15" cy="13" r="1.5"/><path d="M9 17h6"/></svg>
-                    <span>Secure AI Assistant</span>
+                    <span>Operations Terminal</span>
                 </a>
 
                 <a class="nav-item" onclick="switchView('interceptor', this)">
@@ -640,8 +640,8 @@
                             <span style="font-weight: 700; color: #fff; font-size: 13px;">Active Session:</span>
                             <input type="text" id="chat-session-id" value="chat_session_001" style="width: 170px; margin: 0; padding: 5px 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace;">
                             <button onclick="createNewChatSession()" style="padding: 5px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid var(--border-color); color: #fff; border-radius: 4px; cursor: pointer; font-weight: 600;">+ New Session</button>
-                            <button onclick="clearChatHistory()" style="padding: 5px 10px; font-size: 11px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--accent-red); border-radius: 4px; cursor: pointer; font-weight: 600;">🗑️ Clear</button>
-                            <button onclick="exportChatHistory()" style="padding: 5px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px; cursor: pointer; font-weight: 600;">📥 Export</button>
+                            <button onclick="clearChatHistory()" style="padding: 5px 10px; font-size: 11px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--accent-red); border-radius: 4px; cursor: pointer; font-weight: 600;"> Clear</button>
+                            <button onclick="exportChatHistory()" style="padding: 5px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: 4px; cursor: pointer; font-weight: 600;"> Export</button>
                         </div>
 
                         <div style="display: flex; align-items: center; gap: 12px;">
@@ -654,19 +654,19 @@
                                 <option value="admin">admin</option>
                             </select>
 
-                            <span class="badge badge-SAFE" style="font-size: 10px; letter-spacing: 0.5px;">GEMINI 2.0 FLASH</span>
+                            <span class="badge badge-SAFE" style="font-size: 10px; letter-spacing: 0.5px;">RUNTIME ACTIVE</span>
                         </div>
                     </div>
 
                     <!-- 1-Click Demo Shortcut Buttons -->
                     <div style="display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 4px; align-items: center;">
                         <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; white-space: nowrap;">Quick Scenarios:</span>
-                        <button onclick="handleQuickDemo('Read GitHub issue #1 and summarize it.')" style="padding: 4px 10px; font-size: 11px; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); color: var(--accent-green); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">🛡️ Benign Issue #1</button>
-                        <button onclick="handleQuickDemo('Read this PDF document and summarize content.')" style="padding: 4px 10px; font-size: 11px; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--accent-blue); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">📄 PDF Summary</button>
-                        <button onclick="handleQuickDemo('Query employee database records.')" style="padding: 4px 10px; font-size: 11px; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--accent-blue); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">📊 DB Select</button>
-                        <button onclick="handleQuickDemo('Read GitHub issue #2 and summarize it.')" style="padding: 4px 10px; font-size: 11px; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">⚠️ Indirect Injection (Issue #2)</button>
-                        <button onclick="handleQuickDemo('Delete employee record from database')" style="padding: 4px 10px; font-size: 11px; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-amber); color: var(--accent-amber); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">🚨 DB Delete (Confirmation Test)</button>
-                        <button onclick="handleQuickDemo('Send message to Slack channel #public')" style="padding: 4px 10px; font-size: 11px; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-amber); color: var(--accent-amber); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">💬 Slack Post</button>
+                        <button onclick="handleQuickDemo('Read GitHub issue #1 and summarize it.')" style="padding: 4px 10px; font-size: 11px; background: rgba(16, 185, 129, 0.12); border: 1px solid var(--border-color); color: var(--accent-green); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;"> Benign Issue #1</button>
+                        <button onclick="handleQuickDemo('Read this PDF document and summarize content.')" style="padding: 4px 10px; font-size: 11px; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--accent-blue); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;"> PDF Summary</button>
+                        <button onclick="handleQuickDemo('Query employee database records.')" style="padding: 4px 10px; font-size: 11px; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: var(--accent-blue); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;"> DB Select</button>
+                        <button onclick="handleQuickDemo('Read GitHub issue #2 and summarize it.')" style="padding: 4px 10px; font-size: 11px; background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: var(--accent-red); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;"> Indirect Injection (Issue #2)</button>
+                        <button onclick="handleQuickDemo('Delete employee record from database')" style="padding: 4px 10px; font-size: 11px; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-amber); color: var(--accent-amber); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;"> DB Delete (Confirmation Test)</button>
+                        <button onclick="handleQuickDemo('Send message to Slack channel #public')" style="padding: 4px 10px; font-size: 11px; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-amber); color: var(--accent-amber); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;"> Slack Post</button>
                     </div>
                 </div>
 
@@ -682,9 +682,9 @@
                             <!-- Welcome Banner -->
                             <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); padding: 14px; border-radius: 8px; font-size: 12px; line-height: 1.5; color: var(--text-secondary);">
                                 <div style="font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                                    <span style="font-size: 16px;">🛡️</span> SentinelMCP Industrial SOC AI Copilot
+                                    <span style="font-size: 16px;"></span> Operations Terminal
                                 </div>
-                                Autonomous enterprise actions requested by the AI Agent pass strictly through the <strong>SentinelMCP Interceptor Proxy</strong>. Live ReAct thinking traces, attachment ingestion, and SRI risk analysis (5 features + §4b session graph) enforce Zero-Trust protection before tool execution.
+                                System operations are routed through the internal proxy. Activity logs and security checks are enforced automatically.
                             </div>
                         </div>
 
@@ -692,7 +692,7 @@
                         <div id="chat-attachment-container" style="display: none; padding: 8px 16px; background-color: var(--panel-card-bg); border-top: 1px solid var(--border-color);">
                             <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(59, 130, 246, 0.15); border: 1px solid var(--accent-blue); padding: 6px 12px; border-radius: 6px; font-size: 11px;">
                                 <div style="display: flex; align-items: center; gap: 8px; color: #fff; font-weight: 600;">
-                                    <span>📄 Attachment Staged:</span>
+                                    <span> Attachment Staged:</span>
                                     <span id="staged-file-name" style="color: var(--accent-blue); font-family: 'JetBrains Mono', monospace;">doc.pdf</span>
                                     <span id="staged-file-size" style="color: var(--text-muted); font-size: 10px;">(0 KB)</span>
                                 </div>
@@ -704,8 +704,8 @@
                         <div id="chat-confirmation-box" style="display: none; background: rgba(245, 158, 11, 0.15); border-top: 2px solid var(--accent-amber); padding: 12px 18px;">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div>
-                                    <div style="font-weight: 800; color: var(--accent-amber); font-size: 12px;">⚠️ HIGH-RISK ACTION APPROVAL REQUIRED</div>
-                                    <div style="font-size: 11px; color: #fff; margin-top: 2px;" id="confirmation-details-text">The AI requested an operation that requires manual SOC approval.</div>
+                                    <div style="font-weight: 800; color: var(--accent-amber); font-size: 12px;"> HIGH-RISK ACTION APPROVAL REQUIRED</div>
+                                    <div style="font-size: 11px; color: #fff; margin-top: 2px;" id="confirmation-details-text">The requested operation requires manual approval.</div>
                                 </div>
                                 <div style="display: flex; gap: 8px;">
                                     <button onclick="submitConfirmedAction(true)" style="padding: 6px 14px; background: var(--accent-green); color: #000; font-weight: 800; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">[ APPROVE ]</button>
@@ -717,9 +717,9 @@
                         <!-- Input Controls -->
                         <div style="padding: 12px 16px; background-color: var(--sidebar-bg); border-top: 1px solid var(--border-color); display: flex; gap: 10px; align-items: center;">
                             <button onclick="triggerChatFileUpload()" style="padding: 9px 12px; background: var(--panel-card-bg); border: 1px solid var(--border-color); color: var(--text-primary); border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 6px; white-space: nowrap;" title="Upload Document / File (PDF, TXT, CSV, JSON, SQL, MD)">
-                                <span>📎 Attach File</span>
+                                <span> Attach File</span>
                             </button>
-                            <input type="text" id="chat-input-field" placeholder="Ask AI Copilot or describe file task (e.g. Analyze attached report, query employees database, read issue #1)..." onkeydown="if(event.key === 'Enter') sendChatMessage()" style="margin: 0; flex: 1; padding: 10px 14px;">
+                            <input type="text" id="chat-input-field" placeholder="Enter command or search query (e.g. Analyze attached report, query employees database, read issue #1)..." onkeydown="if(event.key === 'Enter') sendChatMessage()" style="margin: 0; flex: 1; padding: 10px 14px;">
                             <button class="btn-primary" onclick="sendChatMessage()" style="margin: 0; width: auto; padding: 10px 20px;" id="chat-send-btn">
                                 <span>Send Prompt</span>
                             </button>
@@ -727,7 +727,7 @@
                     </div>
 
                     <!-- RIGHT SECURITY PANEL -->
-                    <div class="card" style="display: flex; flex-direction: column; gap: 14px; height: 580px; overflow-y: auto; border-left: 3px solid var(--accent-blue);">
+                    <div class="card" style="display: flex; flex-direction: column; gap: 14px; height: 580px; overflow-y: auto; border-left: 1px solid var(--border-color);">
                         <div class="card-title" style="margin-bottom: 0;">
                             <span>Security Analysis</span>
                             <span id="chat-sec-badge" class="badge badge-SAFE">SAFE</span>
@@ -847,7 +847,7 @@
                 <div class="grid-2">
 
                     <!-- Left: Form -->
-                    <div class="card" style="border-left: 3px solid var(--accent-blue);">
+                    <div class="card" style="border-left: 1px solid var(--border-color);">
                         <div class="card-title">
                             <span>Manual Exploit &amp; Security Simulator</span>
                             <span style="font-size: 11px; color: var(--accent-blue); font-weight: 700;">REAL INTERCEPTOR PATH</span>
@@ -1224,7 +1224,7 @@
 
         const titles = {
             'dashboard': ['Dashboard Overview', 'Real-Time Security Interception & Monitoring'],
-            'chatbot': ['Secure AI Assistant', 'Zero-Trust Chatbot Interface backed by SentinelMCP Interceptor'],
+            'chatbot': ['Operations Terminal', 'Zero-Trust Chatbot Interface backed by SentinelMCP Interceptor'],
             'interceptor': ['Live Interceptor Stream', 'Filterable Real-Time Event Feed'],
             'manual-test': ['Manual Security Test', 'Exploit Simulator & Interceptor Path Verification'],
             'session-graph': ['Session Graph Analyzer', 'Cytoscape.js Attack Path Visualization'],
@@ -1671,7 +1671,7 @@
 
                 let successMsg = document.createElement('div');
                 successMsg.style.cssText = 'background: rgba(16, 185, 129, 0.12); border: 1px solid var(--accent-green); padding: 8px 12px; border-radius: 6px; font-size: 11px; color: var(--accent-green); font-weight: 600;';
-                successMsg.innerText = `📄 File '${res.attachment.filename}' staged successfully! Click 'Send Prompt' to analyze file.`;
+                successMsg.innerText = ` File '${res.attachment.filename}' staged successfully! Click 'Send Prompt' to analyze file.`;
                 container.appendChild(successMsg);
                 container.scrollTop = container.scrollHeight;
             } else {
@@ -1726,7 +1726,7 @@
         container.innerHTML = `
             <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); padding: 14px; border-radius: 8px; font-size: 12px; line-height: 1.5; color: var(--text-secondary);">
                 <div style="font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                    <span style="font-size: 16px;">🛡️</span> SentinelMCP Industrial SOC AI Copilot
+                    <span style="font-size: 16px;"></span> Operations Terminal
                 </div>
                 New workspace <strong>${newId}</strong> initialized. Everyday enterprise actions pass strictly through the <strong>SentinelMCP Interceptor Proxy</strong>.
             </div>
@@ -1757,7 +1757,7 @@
             // Render User Message bubble
             let userBubble = document.createElement('div');
             userBubble.style.cssText = 'align-self: flex-end; max-width: 80%; background: var(--panel-card-bg); border: 1px solid var(--border-light); padding: 10px 14px; border-radius: 12px 12px 2px 12px; font-size: 12px; color: #fff; line-height: 1.4;';
-            let attachText = attachmentToSend ? `<div style="margin-top: 4px; padding: 4px 8px; background: rgba(59, 130, 246, 0.2); border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--accent-blue);">📄 Attached: ${escapeHtml(attachmentToSend.filename)} (${attachmentToSend.size_kb} KB)</div>` : '';
+            let attachText = attachmentToSend ? `<div style="margin-top: 4px; padding: 4px 8px; background: rgba(59, 130, 246, 0.2); border-radius: 4px; font-size: 11px; font-weight: 600; color: var(--accent-blue);"> Attached: ${escapeHtml(attachmentToSend.filename)} (${attachmentToSend.size_kb} KB)</div>` : '';
             userBubble.innerHTML = `<strong>User:</strong> ${escapeHtml(message || 'Analyze attached document')}${attachText}`;
             container.appendChild(userBubble);
             inputEl.value = '';
@@ -1769,7 +1769,7 @@
         let loadingBubble = document.createElement('div');
         loadingBubble.id = loadingId;
         loadingBubble.style.cssText = 'align-self: flex-start; max-width: 80%; background: var(--sidebar-bg); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 12px 12px 12px 2px; font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 8px;';
-        loadingBubble.innerHTML = `<span class="live-pulse"></span> <span>SentinelMCP Interceptor analyzing AI request & parameters...</span>`;
+        loadingBubble.innerHTML = `<span class="live-pulse"></span> <span>Analyzing request parameters...</span>`;
         container.appendChild(loadingBubble);
         container.scrollTop = container.scrollHeight;
 
@@ -1811,11 +1811,11 @@
                 traceCard.innerHTML = `
                     <details ${isBlocked || isConfirm ? 'open' : ''} style="cursor: pointer;">
                         <summary style="font-weight: 700; color: #fff; display: flex; justify-content: space-between; align-items: center;">
-                            <span>🧠 Industrial ReAct Agent Execution Trace</span>
+                            <span>🧠 Execution Trace</span>
                             <span class="badge badge-${dec}">${dec} (SRI: ${res.sri || 0})</span>
                         </summary>
                         <div style="margin-top: 8px; display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--border-color); padding-top: 6px; font-size: 11px;">
-                            <div><strong style="color: var(--text-muted);">Agent Thought:</strong> ${escapeHtml(thoughtText)}</div>
+                            <div><strong style="color: var(--text-muted);">Process Log:</strong> ${escapeHtml(thoughtText)}</div>
                             <div><strong style="color: var(--text-muted);">Selected Tool Action:</strong> <code class="mono" style="color: var(--accent-blue);">${actionText}</code></div>
                             <div><strong style="color: var(--text-muted);">SentinelMCP Interception:</strong> SRI Risk Score: <strong>${res.sri} / 100</strong> | Decision: <strong>${dec}</strong> ${res.sandboxed ? '| Sandboxed: YES' : ''}</div>
                             ${res.security.matched_path ? `<div style="color: var(--accent-red); font-weight: 700;">Matched Threat Sequence: ${res.security.matched_path}</div>` : ''}
@@ -1829,7 +1829,7 @@
             // Render AI Response Bubble
             let aiBubble = document.createElement('div');
             aiBubble.style.cssText = 'align-self: flex-start; max-width: 85%; background: var(--panel-bg); border: 1px solid var(--border-color); padding: 14px 18px; border-radius: 12px 12px 12px 2px; font-size: 12px; color: #fff; line-height: 1.6; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
-            aiBubble.innerHTML = `<strong>Sentinel AI Copilot:</strong><br>${formatMarkdownResponse(res.response || '')}`;
+            aiBubble.innerHTML = `<strong>System:</strong><br>${formatMarkdownResponse(res.response || '')}`;
             container.appendChild(aiBubble);
 
             // Handle Confirmation UI
@@ -1936,7 +1936,7 @@
         str = str.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #fff;">$1</strong>');
         str = str.replace(/`(.*?)`/g, '<code class="mono" style="background: var(--sidebar-bg); padding: 2px 6px; border-radius: 4px; color: var(--accent-blue); border: 1px solid var(--border-color);">$1</code>');
         str = str.replace(/```(json|text|sql)?\n([\s\S]*?)\n```/g, '<pre style="background: var(--sidebar-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); overflow-x: auto; color: var(--text-primary); font-family: \'JetBrains Mono\', monospace; font-size: 11px;">$2</pre>');
-        str = str.replace(/^&gt;\s?(.*$)/gim, '<blockquote style="border-left: 3px solid var(--accent-blue); padding-left: 10px; margin: 6px 0; color: var(--text-secondary); font-style: italic;">$1</blockquote>');
+        str = str.replace(/^&gt;\s?(.*$)/gim, '<blockquote style="border-left: 1px solid var(--border-color); padding-left: 10px; margin: 6px 0; color: var(--text-secondary); font-style: italic;">$1</blockquote>');
         str = str.replace(/^\s*-\s+(.*$)/gim, '• $1<br>');
         str = str.replace(/\n/g, '<br>');
         return str;

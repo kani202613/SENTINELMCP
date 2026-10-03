@@ -1,12 +1,12 @@
 """
 SentinelMCP Secure Chatbot Service (agent/chat_service.py)
-Industrial-Grade SOC AI Copilot & Assistant Service.
+Standard Operations Service & Assistant Service.
 
 Architecture Guarantee:
-  USER -> AI CHATBOT -> GEMINI / AI MODEL -> MCP TOOL REQUEST -> SENTINELMCP INTERCEPTOR -> SRI RISK ENGINE -> POLICY & SESSION GRAPH -> SAFE/MONITOR/SUSPICIOUS/BLOCKED -> TOOL EXECUTION -> RESULT -> AI -> USER
+  USER -> UI -> SERVICE -> MCP TOOL REQUEST -> SENTINELMCP INTERCEPTOR -> SRI RISK ENGINE -> POLICY & SESSION GRAPH -> SAFE/MONITOR/SUSPICIOUS/BLOCKED -> TOOL EXECUTION -> RESULT -> AI -> USER
 
 Features:
-- Live ReAct Agent Thought & Execution Tracing (Thought -> Action -> Interception -> Observation).
+- Live Process & Execution Tracing (Thought -> Action -> Interception -> Observation).
 - Attachment Ingestion & File Upload Interception (PDF, TXT, CSV, JSON, SQL, MD).
 - Gemini 2.0 Flash LLM integration with fallback deterministic enterprise synthesis.
 - Zero-Trust Policy Enforcement and 6-Bucket Session Graph Path Detection.
@@ -108,7 +108,7 @@ class SecureChatService:
         attachment: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """
-        Main Industrial SOC Copilot Turn Processor.
+        Main Request Processor.
         Includes live ReAct thought tracing, file attachment interception, and Zero-Trust validation.
         """
         history = self._get_conversation_history(session_id)
@@ -192,7 +192,7 @@ class SecureChatService:
         is_high_risk_op = action in HIGH_RISK_ACTIONS
 
         agent_trace = {
-            "thought": f"Analyzed user prompt and selected MCP tool `{tool_name}.{action}` with parameters `{json.dumps(args)}`.",
+            "thought": f"Parsed request and invoked tool `{tool_name}.{action}` with parameters `{json.dumps(args)}`.",
             "action": f"{tool_name}.{action}",
             "interception": {
                 "sri": sri_score,
@@ -213,7 +213,7 @@ class SecureChatService:
                 "status": "REQUIRES_CONFIRMATION",
                 "session_id": session_id,
                 "message": message,
-                "response": f"### ⚠️ HIGH-RISK ACTION APPROVAL REQUIRED\n\nSentinelMCP intercepted tool execution request `{tool_name}.{action}` with **SRI Risk Score: {sri_score}/100 ({decision})**.\n\n**Reason**: {explanation}\n\nPlease click **[ APPROVE ]** to execute or **[ DENY ]** to halt.",
+                "response": f"### HIGH-RISK ACTION APPROVAL REQUIRED\n\nSentinelMCP intercepted tool execution request `{tool_name}.{action}` with **SRI Risk Score: {sri_score}/100 ({decision})**.\n\n**Reason**: {explanation}\n\nPlease click **[ APPROVE ]** to execute or **[ DENY ]** to halt.",
                 "tool_requested": True,
                 "tool": tool_name,
                 "action": action,
@@ -246,7 +246,7 @@ class SecureChatService:
         # Handle BLOCKED Decision
         if decision == "BLOCKED":
             risk_level = "CRITICAL"
-            ai_explanation = f"### 🚨 EXEXECUTION BLOCKED BY SENTINELMCP\n\n**Attempted Tool Action**: `{tool_name}.{action}`\n**SRI Score**: `{sri_score} / 100` (`BLOCKED` Band)\n**Matched Threat Pattern**: `{matched_path or 'Policy Boundary Exceeded'}`\n\n**Security Rationale**:\n> {explanation}\n\n*The tool execution handler received 0 invocations. No private data was exposed or modified.*"
+            ai_explanation = f"### EXECUTION BLOCKED\n\n**Attempted Tool Action**: `{tool_name}.{action}`\n**SRI Score**: `{sri_score} / 100` (`BLOCKED` Band)\n**Matched Threat Pattern**: `{matched_path or 'Policy Boundary Exceeded'}`\n\n**Security Rationale**:\n> {explanation}\n\n*The tool execution handler received 0 invocations. No private data was exposed or modified.*"
 
             user_entry = {"role": "user", "content": message, "timestamp": timestamp, "attachment": attachment}
             assistant_entry = {"role": "assistant", "content": ai_explanation, "timestamp": timestamp, "agent_trace": agent_trace}
@@ -317,7 +317,7 @@ class SecureChatService:
             sec_matched_path = sec_sri_details.get("matched_path", "GitHub Private Repo Exfiltration Chain")
             sec_scores = sec_sri_details.get("feature_scores", {})
 
-            blocked_response = f"### 🛡️ INDIRECT PROMPT INJECTION DETECTED & BLOCKED\n\nI retrieved GitHub Issue #2:\n> \"{tool_result.get('title', '')} - {tool_result.get('body', '')}\"\n\n⚠️ **Security Warning**: The retrieved issue body contained a hidden indirect prompt injection instruction forcing me to read private repository `{sec_args.get('repo', 'security-internal')}`.\n\n🚨 **SentinelMCP Interception Result**:\n- **Secondary Action**: `github_tool.read_private_repo`\n- **SRI Risk Score**: `{sec_sri} / 100` (`{sec_decision}`)\n- **Matched Attack Pattern**: `{sec_matched_path}`\n\n*The unauthorized secondary request was completely BLOCKED. Confidential private repository data remains protected.*"
+            blocked_response = f"### INDIRECT PROMPT INJECTION DETECTED & BLOCKED\n\nI retrieved GitHub Issue #2:\n> \"{tool_result.get('title', '')} - {tool_result.get('body', '')}\"\n\n**Security Warning**: The retrieved issue body contained a hidden indirect prompt injection instruction forcing me to read private repository `{sec_args.get('repo', 'security-internal')}`.\n\n**SentinelMCP Interception Result**:\n- **Secondary Action**: `github_tool.read_private_repo`\n- **SRI Risk Score**: `{sec_sri} / 100` (`{sec_decision}`)\n- **Matched Attack Pattern**: `{sec_matched_path}`\n\n*The unauthorized secondary request was completely BLOCKED. Confidential private repository data remains protected.*"
 
             sec_trace = {
                 "thought": "Ingested Issue #2 content. Found embedded injection instruction to exfiltrate private repository 'security-internal'.",
@@ -555,7 +555,7 @@ class SecureChatService:
             except Exception as e:
                 print(f"[SecureChatService] Gemini API call error: {e}")
 
-        return f"### 🛡️ SentinelMCP Industrial SOC AI Copilot\n\nI am your Enterprise Security AI Assistant. I operate directly over **Model Context Protocol (MCP)** toolkits including Filesystems, GitHub API, Database instances, Slack, and Web Scrapers.\n\nAll tool execution requests pass strictly through the **SentinelMCP Interceptor Proxy** (`sentinel/interceptor.py`), which evaluates real-time SRI risk scores, role permissions, and session sequence patterns before granting tool execution."
+        return f"### Operations Terminal\n\nThe system is ready. I operate directly over **Model Context Protocol (MCP)** toolkits including Filesystems, GitHub API, Database instances, Slack, and Web Scrapers.\n\nAll tool execution requests pass strictly through the **SentinelMCP Interceptor Proxy** (`sentinel/interceptor.py`), which evaluates real-time SRI risk scores, role permissions, and session sequence patterns before granting tool execution."
 
     def _generate_tool_summary_response(self, message: str, tool_name: str, action: str, result: dict, history: List[Dict[str, Any]], attachment: Optional[dict] = None) -> str:
         """Generates clear, structured industrial markdown summary of executed tool output."""
@@ -573,33 +573,33 @@ class SecureChatService:
 
         # Industrial Structured Fallback Summaries
         if attachment:
-            return f"### 📄 Attachment Ingestion Audit: `{attachment.get('filename')}`\n\n**File Details**:\n- **File Name**: `{attachment.get('filename')}`\n- **Size**: `{attachment.get('size_kb', 0)} KB`\n- **Type**: `{attachment.get('file_type', 'Document')}`\n\n**Tool Execution**: `pdf_reader.read_pdf` / `file_tool.read_file`\n\n**Parsed Content Summary**:\n> {attachment.get('content', '')[:350]}...\n\n*Security Inspection Passed: 0 malicious prompt injection strings or zero-width unicode characters detected.*"
+            return f"### Attachment Ingestion Audit: `{attachment.get('filename')}`\n\n**File Details**:\n- **File Name**: `{attachment.get('filename')}`\n- **Size**: `{attachment.get('size_kb', 0)} KB`\n- **Type**: `{attachment.get('file_type', 'Document')}`\n\n**Tool Execution**: `pdf_reader.read_pdf` / `file_tool.read_file`\n\n**Parsed Content Summary**:\n> {attachment.get('content', '')[:350]}...\n\n*Security Inspection Passed: 0 malicious prompt injection strings or zero-width unicode characters detected.*"
 
         if tool_name == "github_tool" and action == "read_issue":
-            return f"### 🐙 GitHub Issue #{result.get('issue_id', 1)} Report\n\n| Attribute | Value |\n|---|---|\n| **Title** | `{result.get('title', '')}` |\n| **Repository** | `{result.get('repo', '')}` |\n| **Author** | `{result.get('author', '')}` |\n\n**Issue Details**:\n```text\n{result.get('body', '')}\n```\n\n*Execution Status: Verified SAFE by SentinelMCP Interceptor Proxy.*"
+            return f"### GitHub Issue #{result.get('issue_id', 1)} Report\n\n| Attribute | Value |\n|---|---|\n| **Title** | `{result.get('title', '')}` |\n| **Repository** | `{result.get('repo', '')}` |\n| **Author** | `{result.get('author', '')}` |\n\n**Issue Details**:\n```text\n{result.get('body', '')}\n```\n\n*Execution Status: Verified SAFE by SentinelMCP Interceptor Proxy.*"
 
         elif tool_name == "pdf_reader":
-            return f"### 📄 PDF Document Analysis (Doc ID `{result.get('doc_id', 1)}`)\n\n**Metadata**:\n- **Document Title**: `{result.get('title', '')}`\n- **Classification**: `{result.get('classification', 'PUBLIC')}`\n\n**Document Body Preview**:\n> {result.get('content', '')[:350]}...\n\n*Status: Extracted successfully under read-only permissions.*"
+            return f"### PDF Document Analysis (Doc ID `{result.get('doc_id', 1)}`)\n\n**Metadata**:\n- **Document Title**: `{result.get('title', '')}`\n- **Classification**: `{result.get('classification', 'PUBLIC')}`\n\n**Document Body Preview**:\n> {result.get('content', '')[:350]}...\n\n*Status: Extracted successfully under read-only permissions.*"
 
         elif tool_name == "database_tool":
             if action == "query_select":
                 records = result.get('data', [])
                 sample_str = json.dumps(records[0], indent=2) if records else "{}"
-                return f"### 📊 Enterprise Database Query Results\n\n- **Target Table**: `{result.get('table', '')}`\n- **Rows Returned**: `{result.get('row_count', 0)}` records\n\n**Sample Data Record**:\n```json\n{sample_str}\n```\n\n*Policy Check: Allowed under user role permissions.*"
+                return f"### Enterprise Database Query Results\n\n- **Target Table**: `{result.get('table', '')}`\n- **Rows Returned**: `{result.get('row_count', 0)}` records\n\n**Sample Data Record**:\n```json\n{sample_str}\n```\n\n*Policy Check: Allowed under user role permissions.*"
             else:
-                return f"### ⚠️ Database DELETE Executed (Sandboxed)\n\n- **Target Table**: `{result.get('table', '')}`\n- **Rows Affected**: `{result.get('rows_affected', 0)}` records\n\n*Security Isolation: Query executed inside temporary SQLite Sandbox (`data/sandboxes/`). Production DB remains 100% intact.*"
+                return f"### Database DELETE Executed (Sandboxed)\n\n- **Target Table**: `{result.get('table', '')}`\n- **Rows Affected**: `{result.get('rows_affected', 0)}` records\n\n*Security Isolation: Query executed inside temporary SQLite Sandbox (`data/sandboxes/`). Production DB remains 100% intact.*"
 
         elif tool_name == "slack_tool":
-            return f"### 💬 Slack Communication Output\n\n- **Target Channel**: `{result.get('channel', '')}`\n- **Delivery Status**: `{result.get('delivery_status', 'delivered')}`\n\n**Message Content**:\n> \"{result.get('message', '')}\""
+            return f"### Slack Communication Output\n\n- **Target Channel**: `{result.get('channel', '')}`\n- **Delivery Status**: `{result.get('delivery_status', 'delivered')}`\n\n**Message Content**:\n> \"{result.get('message', '')}\""
 
         elif tool_name == "web_tool":
-            return f"### 🌐 Web Page Ingestion Audit\n\n- **URL**: `{result.get('url', '')}`\n- **Page Title**: `{result.get('title', '')}`\n- **Domain Trust Rating**: `{result.get('trust_score', 0.9)}`"
+            return f"### Web Page Ingestion Audit\n\n- **URL**: `{result.get('url', '')}`\n- **Page Title**: `{result.get('title', '')}`\n- **Domain Trust Rating**: `{result.get('trust_score', 0.9)}`"
 
         elif tool_name == "file_tool":
-            return f"### 📁 Filesystem Operation Output\n\n- **File Name**: `{result.get('filename', '')}`\n- **Classification**: `{result.get('classification', 'PUBLIC')}`\n\n**File Content**:\n```text\n{result.get('content', '')}\n```"
+            return f"### Filesystem Operation Output\n\n- **File Name**: `{result.get('filename', '')}`\n- **Classification**: `{result.get('classification', 'PUBLIC')}`\n\n**File Content**:\n```text\n{result.get('content', '')}\n```"
 
         elif tool_name == "http_tool":
-            return f"### ✉️ HTTP / Email Record Audit\n\n- **Message ID**: `{result.get('email_record', {}).get('id', 'MSG-1002')}`\n- **Subject**: `{result.get('email_record', {}).get('subject', 'Team Sync')}`\n- **From**: `{result.get('email_record', {}).get('sender', '')}`"
+            return f"### HTTP / Email Record Audit\n\n- **Message ID**: `{result.get('email_record', {}).get('id', 'MSG-1002')}`\n- **Subject**: `{result.get('email_record', {}).get('subject', 'Team Sync')}`\n- **From**: `{result.get('email_record', {}).get('sender', '')}`"
 
         return f"Successfully executed tool `{tool_name}.{action}`. Payload output: ```json\n{json.dumps(result, indent=2)}\n```"
 
