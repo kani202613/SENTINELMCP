@@ -174,7 +174,8 @@ class SecureChatService:
             "user_role": user_role,
             "context": f"{message} [Attachment: {attachment['filename']}]" if attachment else message,
             "args": args,
-            "source_trust": source_trust
+            "source_trust": source_trust,
+            "is_confirmed": confirm_action
         }
 
         # Execute Interceptor

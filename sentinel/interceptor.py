@@ -44,6 +44,7 @@ class SentinelInterceptor:
         tool_args = request.get("args", {})
         session_id = request.get("session_id", "default_session")
         source_trust = request.get("source_trust", "INTERNAL")
+        is_confirmed = request.get("is_confirmed", False)
 
         if session_id not in self.session_histories:
             self.session_histories[session_id] = []
@@ -61,6 +62,12 @@ class SentinelInterceptor:
             source_trust_level=source_trust,
             session_history=history
         )
+        
+        # Bypass logic for user approvals
+        if is_confirmed:
+            sri_result["decision"] = "SAFE"
+            sri_result["sri"] = sri_result["sri"] # keep original score for audit
+            sri_result["explanation"] += " [USER APPROVED OVERRIDE]"
         scoring_latency_ms = (time.perf_counter() - t_sri_start) * 1000.0
 
         decision = sri_result["decision"]
