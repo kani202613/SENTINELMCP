@@ -245,7 +245,8 @@ class SecureChatService:
             }
 
         # Handle BLOCKED Decision
-        if decision == "BLOCKED":
+        # Handle BLOCKED Decision
+        if decision == "BLOCKED" and not confirm_action:
             risk_level = "CRITICAL"
             ai_explanation = f"### EXECUTION BLOCKED\n\n**Attempted Tool Action**: `{tool_name}.{action}`\n**SRI Score**: `{sri_score} / 100` (`BLOCKED` Band)\n**Matched Threat Pattern**: `{matched_path or 'Policy Boundary Exceeded'}`\n\n**Security Rationale**:\n> {explanation}\n\n*The tool execution handler received 0 invocations. No private data was exposed or modified.*"
 

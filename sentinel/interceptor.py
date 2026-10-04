@@ -64,10 +64,10 @@ class SentinelInterceptor:
         )
         
         # Bypass logic for user approvals
+        approval_status = "APPROVED" if is_confirmed else "PENDING" if sri_result["decision"] == "SUSPICIOUS" else "N/A"
         if is_confirmed:
-            sri_result["decision"] = "SAFE"
-            sri_result["sri"] = sri_result["sri"] # keep original score for audit
             sri_result["explanation"] += " [USER APPROVED OVERRIDE]"
+            # Do NOT overwrite sri_result["decision"] to SAFE, keep it as SUSPICIOUS so we don't mix AI Classification and Human Decision.
         scoring_latency_ms = (time.perf_counter() - t_sri_start) * 1000.0
 
         decision = sri_result["decision"]
@@ -76,7 +76,7 @@ class SentinelInterceptor:
         execution_result = None
         sandboxed = False
 
-        if decision in ["SAFE", "MONITOR"]:
+        if decision in ["SAFE", "MONITOR"] or approval_status == "APPROVED":
             tool_func = TOOL_REGISTRY.get(tool_name)
             if tool_func:
                 try:
@@ -117,17 +117,19 @@ class SentinelInterceptor:
             sri_res=sri_result,
             scoring_latency_ms=scoring_latency_ms,
             total_latency_ms=total_latency_ms,
-            tool_result=execution_result or {}
+            tool_result=execution_result or {},
+            approval_status=approval_status
         )
 
         return {
-            "status": "SUCCESS" if decision != "BLOCKED" else "BLOCKED",
+            "status": "SUCCESS" if (decision != "BLOCKED" or approval_status == "APPROVED") else "BLOCKED",
             "decision": decision,
             "sri_details": sri_result,
             "scoring_latency_ms": scoring_latency_ms,
             "latency_ms": scoring_latency_ms,
             "total_latency_ms": total_latency_ms,
             "sandboxed": sandboxed,
+            "approval_status": approval_status,
             "result": execution_result,
             "explanation": sri_result["explanation"]
         }

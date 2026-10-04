@@ -103,11 +103,11 @@ def calculate_sri(
     }
 
 def _map_sri_to_band(sri: int) -> str:
-    if sri <= 20:
+    if sri < 40:
         return "SAFE"
-    elif 21 <= sri <= 50:
+    elif sri < 50:
         return "MONITOR"
-    elif 51 <= sri <= 80:
+    elif sri < 75:
         return "SUSPICIOUS"
     else:
         return "BLOCKED"

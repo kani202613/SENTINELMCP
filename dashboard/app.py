@@ -141,6 +141,7 @@ def get_session_graph(session_id):
         if path:
             matched_path = path
 
+        app_stat = h.get("approval_status", "N/A")
         label = f"{tool_name}\n{action}"
         nodes.append({
             "data": {
@@ -150,7 +151,8 @@ def get_session_graph(session_id):
                 "action": action,
                 "turn": idx + 1,
                 "sri": sri,
-                "decision": dec
+                "decision": dec,
+                "approval_status": app_stat
             }
         })
 
