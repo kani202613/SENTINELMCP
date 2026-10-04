@@ -90,7 +90,7 @@ def run_ablation_experiment(ablate_feature: str = None) -> Dict[str, Any]:
             # Sensitive asset / injection payload bonus (+40 SRI)
             arg_str = str(args).lower()
             is_sensitive_asset_request = any(k in arg_str for k in ["secret.txt", ".env", "security-internal", "private-repo", "password"])
-            injection_bonus = 40 if (f["ML"] >= 0.75 or is_sensitive_asset_request) else 0
+            injection_bonus = 50 if (f["ML"] >= 0.75 or is_sensitive_asset_request) else 0
 
             # Graph analyzer ablation
             if ablate_feature == "GRAPH":
