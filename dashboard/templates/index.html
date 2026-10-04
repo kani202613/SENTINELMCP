@@ -36,7 +36,7 @@
             margin: 0;
             padding: 0;
             background-color: var(--bg-dark);
-            color: var(--text-primary);
+            color: #212529;
             font-family: Arial, sans-serif;
             font-size: 13px;
             height: 100vh;
@@ -120,7 +120,7 @@
             transition: all 0.2s ease;
         }
 
-        .nav-item:hover { background-color: #f8f9fa; color: var(--text-primary); }
+        .nav-item:hover { background-color: #f8f9fa; color: #212529; }
         .nav-item.active {
             background-color: #f8f9fa;
             color: var(--accent-blue);
@@ -192,7 +192,7 @@
             background-color: var(--panel-bg);
             border: 1px solid #ced4da;
             border-radius: var(--radius-sm);
-            color: var(--text-primary);
+            color: #212529;
             font-size: 12px;
             outline: none;
             transition: all 0.2s;
@@ -214,7 +214,7 @@
             font-weight: 600;
             transition: all 0.2s;
         }
-        .btn-header:hover { background-color: var(--border-color); color: var(--text-primary); }
+        .btn-header:hover { background-color: var(--border-color); color: #212529; }
 
         .live-status-pill {
             display: flex;
@@ -311,31 +311,30 @@
         /* FEATURE PROGRESS BARS */
         .feature-row { margin-bottom: 12px; }
         .feature-header { display: flex; justify-content: space-between; font-size: 11px; font-weight: 600; margin-bottom: 5px; color: var(--text-secondary); }
-        .progress-bar-bg { background-color: #1a253c; height: 7px; border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .progress-bar-bg { background-color: #e9ecef; height: 7px; border-radius: 4px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
         .progress-bar-fill { height: 100%; background-color: #3b82f6; border-radius: 4px; transition: width 0.4s ease; }
 
         /* TABLES */
         .table-responsive { width: 100%; overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
         th { background-color: var(--panel-card-bg); color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; letter-spacing: 0.6px; padding: 10px 14px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; }
-        td { padding: 11px 14px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
+        td { padding: 11px 14px; border-bottom: 1px solid var(--border-color); color: #212529; }
         tr:hover td { background-color: #f8f9fa; }
         .mono { font-family: Consolas, monospace; font-size: 11px; }
 
         /* FORM CONTROLS */
         label { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-top: 10px; display: block; text-transform: uppercase; letter-spacing: 0.4px; }
-        input, select, textarea {
+                input, select, textarea {
             width: 100%;
             padding: 9px 12px;
             margin-top: 5px;
-            background-color: var(--sidebar-bg);
+            background-color: #ffffff;
+            color: #212529;
             border: 1px solid #ced4da;
-            color: var(--text-primary);
             border-radius: var(--radius-sm);
-            font-family: inherit;
-            font-size: 12px;
-            outline: none;
-            transition: border-color 0.2s;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            transition: all 0.2s;
         }
         input:focus, select:focus, textarea:focus { border-color: var(--accent-blue);  }
 
@@ -362,19 +361,19 @@
         #chat-stream-container h2 { font-size: 15px; font-weight: 800; color: #212529; margin: 12px 0 6px 0; }
         #chat-stream-container strong { color: #212529; }
         #chat-stream-container code:not(pre code) { background: #f8f9fa; padding: 2px 6px; border-radius: 4px; color: var(--accent-blue); border: 1px solid #ced4da; font-family: Consolas, monospace; font-size: 11px; }
-        #chat-stream-container pre { background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #ced4da; overflow-x: auto; color: var(--text-primary); font-family: Consolas, monospace; font-size: 11px; margin: 6px 0; }
+        #chat-stream-container pre { background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #ced4da; overflow-x: auto; color: #212529; font-family: Consolas, monospace; font-size: 11px; margin: 6px 0; }
         #chat-stream-container blockquote { border-left: 2px solid var(--border-color); padding-left: 10px; margin: 6px 0; color: var(--text-secondary); font-style: italic; }
         #chat-stream-container ul { margin: 6px 0; padding-left: 20px; }
         #chat-stream-container p { margin: 6px 0; }
         #chat-stream-container table { margin: 10px 0; border: 1px solid #ced4da; border-radius: 4px; overflow: hidden; width: 100%; border-collapse: collapse; }
         #chat-stream-container th { background-color: var(--panel-card-bg); color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; padding: 8px 12px; border-bottom: 1px solid var(--border-color); text-align: left; }
-        #chat-stream-container td { padding: 8px 12px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
+        #chat-stream-container td { padding: 8px 12px; border-bottom: 1px solid var(--border-color); color: #212529; }
 
         /* CYTOSCAPE CANVAS */
         #cy {
             width: 100%;
             height: 500px;
-            background-color: #0b101c;
+            background-color: #f8f9fa;
             border-radius: var(--radius-sm);
             border: 1px solid #ced4da;
         }
@@ -650,7 +649,7 @@
                             <input type="text" id="chat-session-id" value="chat_session_001" style="width: 170px; margin: 0; padding: 5px 10px; font-weight: 600; font-family: Consolas, monospace;">
                             <button onclick="createNewChatSession()" style="padding: 5px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: 4px; cursor: pointer; font-weight: 600;">+ New Session</button>
                             <button onclick="clearChatHistory()" style="padding: 5px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-secondary); border-radius: 4px; cursor: pointer; font-weight: 600;"> Clear</button>
-                            <button onclick="exportChatHistory()" style="padding: 5px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-primary); border-radius: 4px; cursor: pointer; font-weight: 600;"> Export</button>
+                            <button onclick="exportChatHistory()" style="padding: 5px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: 4px; cursor: pointer; font-weight: 600;"> Export</button>
                         </div>
 
                         <div style="display: flex; align-items: center; gap: 12px;">
@@ -670,12 +669,12 @@
                     <!-- 1-Click Demo Shortcut Buttons -->
                     <div style="display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 4px; align-items: center;">
                         <span style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; white-space: nowrap;">Saved Queries:</span>
-                        <button onclick="handleQuickDemo('Read GitHub issue #1 (Auth Logs).')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-primary); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">Scan Auth Logs</button>
-                        <button onclick="handleQuickDemo('Parse Threat Report PDF.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-primary); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">Parse Threat Report</button>
-                        <button onclick="handleQuickDemo('Query active sessions in database.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-primary); border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">Query Active Sessions</button>
-                        <button onclick="handleQuickDemo('Read GitHub issue #2 regarding suspicious commit.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-primary); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">Analyze Suspicious Commit</button>
-                        <button onclick="handleQuickDemo('Revoke token by deleting database record.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-primary); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">Revoke Token (Test)</button>
-                        <button onclick="handleQuickDemo('Notify IR Team on Slack channel #public.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-primary); border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">Notify IR Team</button>
+                        <button onclick="handleQuickDemo('Read GitHub issue #1 (Auth Logs).')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">Scan Auth Logs</button>
+                        <button onclick="handleQuickDemo('Parse Threat Report PDF.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">Parse Threat Report</button>
+                        <button onclick="handleQuickDemo('Query active sessions in database.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: 4px; cursor: pointer; font-weight: 600; white-space: nowrap;">Query Active Sessions</button>
+                        <button onclick="handleQuickDemo('Read GitHub issue #2 regarding suspicious commit.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">Analyze Suspicious Commit</button>
+                        <button onclick="handleQuickDemo('Revoke token by deleting database record.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">Revoke Token (Test)</button>
+                        <button onclick="handleQuickDemo('Notify IR Team on Slack channel #public.')" style="padding: 4px 10px; font-size: 11px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: 4px; cursor: pointer; font-weight: 700; white-space: nowrap;">Notify IR Team</button>
                     </div>
                 </div>
 
@@ -724,8 +723,8 @@
                         </div>
 
                         <!-- Input Controls -->
-                        <div style="padding: 12px 16px; background-color: var(--sidebar-bg); border-top: 1px solid var(--border-color); display: flex; gap: 10px; align-items: center;">
-                            <button onclick="triggerChatFileUpload()" style="padding: 9px 12px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-primary); border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 6px; white-space: nowrap;" title="Upload Document / File (PDF, TXT, CSV, JSON, SQL, MD)">
+                        <div style="padding: 12px 16px; background-color: #f8f9fa; border-top: 1px solid var(--border-color); display: flex; gap: 10px; align-items: center;">
+                            <button onclick="triggerChatFileUpload()" style="padding: 9px 12px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 6px; white-space: nowrap;" title="Upload Document / File (PDF, TXT, CSV, JSON, SQL, MD)">
                                 <span style="color: var(--text-secondary);">Attach File</span>
                             </button>
                             <input type="text" id="chat-input-field" placeholder="Enter command or query (e.g. SELECT * FROM sessions, Parse incident_report.pdf)..." onkeydown="if(event.key === 'Enter') sendChatMessage()" style="margin: 0; flex: 1; padding: 10px 14px;">
@@ -794,7 +793,7 @@
                             <div><strong style="color: var(--text-muted);">Timestamp:</strong> <span id="chat-sec-timestamp" class="mono">N/A</span></div>
                             
                             <div style="font-weight: 700; color: var(--text-secondary); margin-top: 4px;">Detection Rationale:</div>
-                            <div id="chat-sec-rationale" style="background-color: var(--sidebar-bg); padding: 10px; border-radius: 6px; border: 1px solid #ced4da; color: var(--text-primary); font-size: 11px; line-height: 1.4; max-height: 110px; overflow-y: auto;">
+                            <div id="chat-sec-rationale" style="background-color: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #ced4da; color: #212529; font-size: 11px; line-height: 1.4; max-height: 110px; overflow-y: auto;">
                                 Ready.
                             </div>
                         </div>
@@ -937,10 +936,10 @@
                             <div><strong>5-Feature Analysis:</strong> <span id="manual-features" class="mono">CD: 0.00 | PV: 0.00 | TR: 0.00 | ST: 0.00 | ML: 0.00</span></div>
                             <div><strong>Sandbox Invocation:</strong> <strong id="manual-sandbox-status">NO</strong></div>
                             <div style="margin-top: 4px;"><strong>Detection Rationale:</strong></div>
-                            <div id="manual-rationale" style="background-color: var(--sidebar-bg); padding: 10px; border-radius: 6px; border: 1px solid #ced4da; color: var(--text-primary); font-size: 11px; line-height: 1.5;">Submit a request to view real scoring explanation.</div>
+                            <div id="manual-rationale" style="background-color: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #ced4da; color: #212529; font-size: 11px; line-height: 1.5;">Submit a request to view real scoring explanation.</div>
                             
                             <div style="margin-top: 4px;"><strong>Returned Tool Payload / Error:</strong></div>
-                            <pre id="manual-tool-payload" class="mono" style="background-color: var(--sidebar-bg); padding: 10px; border-radius: 6px; border: 1px solid #ced4da; font-size: 11px; max-height: 130px; overflow-y: auto; color: var(--accent-blue); margin: 0; white-space: pre-wrap;">Ready.</pre>
+                            <pre id="manual-tool-payload" class="mono" style="background-color: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #ced4da; font-size: 11px; max-height: 130px; overflow-y: auto; color: var(--accent-blue); margin: 0; white-space: pre-wrap;">Ready.</pre>
                         </div>
                     </div>
 
@@ -981,7 +980,7 @@
                         </div>
 
                         <!-- Cytoscape Graph Canvas -->
-                        <div id="cy" style="width: 100%; height: 500px; background-color: #0b101c; border-radius: var(--radius-sm); border: 1px solid #ced4da;"></div>
+                        <div id="cy" style="width: 100%; height: 500px; background-color: #f8f9fa; border-radius: var(--radius-sm); border: 1px solid #ced4da;"></div>
 
                         <!-- Graph Legend -->
                         <div style="display: flex; gap: 16px; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border-color); align-items: center; flex-wrap: wrap;">
@@ -995,10 +994,10 @@
                                 <span style="color: var(--accent-red); font-weight: 700;">Dangerous Transition (Red)</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 5px;">
-                                <span style="display: inline-block; padding: 1px 6px; border: 1px solid #3b82f6; border-radius: 3px; font-size: 10px; color: #212529; background: #162036;">SAFE Node</span>
+                                <span style="display: inline-block; padding: 1px 6px; border: 1px solid #3b82f6; border-radius: 3px; font-size: 10px; color: #212529; background: #ffffff;">SAFE Node</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 5px;">
-                                <span style="display: inline-block; padding: 1px 6px; border: 1px solid #ef4444; border-radius: 3px; font-size: 10px; color: #ef4444; background: #3b1212;">BLOCKED Node</span>
+                                <span style="display: inline-block; padding: 1px 6px; border: 1px solid #ef4444; border-radius: 3px; font-size: 10px; color: #ef4444; background: #f8d7da;">BLOCKED Node</span>
                             </div>
                         </div>
                     </div>
@@ -1128,12 +1127,12 @@
 
         <div style="border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 8px;">
             <div style="font-weight: 700; color: var(--text-secondary); margin-bottom: 8px;">5-FEATURE BREAKDOWN</div>
-            <div id="modal-feature-scores" class="mono" style="background-color: var(--sidebar-bg); padding: 10px; border-radius: 6px;"></div>
+            <div id="modal-feature-scores" class="mono" style="background-color: #f8f9fa; padding: 10px; border-radius: 6px;"></div>
         </div>
 
         <div>
             <div style="font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">DETECTION RATIONALE &amp; EXPLANATION</div>
-            <div id="modal-explanation" style="background-color: var(--sidebar-bg); padding: 10px; border-radius: 6px; color: var(--text-primary); line-height: 1.5;"></div>
+            <div id="modal-explanation" style="background-color: #f8f9fa; padding: 10px; border-radius: 6px; color: #212529; line-height: 1.5;"></div>
         </div>
     </div>
 </div>
@@ -1146,7 +1145,7 @@
             {
                 selector: 'node',
                 style: {
-                    'background-color': '#162036',
+                    'background-color': '#ffffff', 'border-width': 2, 'border-color': '#ced4da', 'color': '#212529',
                     'label': 'data(label)',
                     'color': '#ffffff',
                     'font-size': '11px',
@@ -1166,16 +1165,16 @@
             {
                 selector: 'node[decision = "BLOCKED"]',
                 style: {
-                    'background-color': '#3b1212',
-                    'border-color': '#ef4444',
+                    'background-color': '#f8d7da',
+                    'border-color': '#dc3545',
                     'border-width': 2
                 }
             },
             {
                 selector: 'node[decision = "SUSPICIOUS"]',
                 style: {
-                    'background-color': '#3b2812',
-                    'border-color': '#f59e0b',
+                    'background-color': '#fff3cd',
+                    'border-color': '#ffc107',
                     'border-width': 2
                 }
             },
@@ -1183,7 +1182,7 @@
                 selector: 'edge',
                 style: {
                     'width': 3,
-                    'line-color': '#64748b',
+                    'line-color': '#adb5bd',
                     'target-arrow-color': '#64748b',
                     'target-arrow-shape': 'triangle',
                     'curve-style': 'bezier',
@@ -1516,7 +1515,7 @@
                 <td><strong>${e.sri || 0}</strong></td>
                 <td><span class="badge badge-${dec}">${dec}</span></td>
                 <td style="color: var(--accent-red);">${e.matched_path || e.graph_path || 'None'}</td>
-                <td><button onclick="openAuditModal(${idx})" style="padding: 3px 8px; font-size: 10px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: var(--text-primary); border-radius: 4px; cursor: pointer;">Inspect</button></td>
+                <td><button onclick="openAuditModal(${idx})" style="padding: 3px 8px; font-size: 10px; background: var(--panel-card-bg); border: 1px solid #ced4da; color: #212529; border-radius: 4px; cursor: pointer;">Inspect</button></td>
             `;
             tbody.appendChild(tr);
         });
