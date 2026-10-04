@@ -1295,7 +1295,7 @@
     function submitManualTest() {
         let mode = document.getElementById('test-mode').value;
         let payload = {
-            session_id: "manual_test_session",
+            session_id: "manual_test_" + Date.now(),
             mode: mode,
             context: document.getElementById('user-prompt').value
         };
