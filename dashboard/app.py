@@ -313,11 +313,24 @@ def chat_upload():
     file.save(file_path)
 
     # Read content preview
+    content = ""
     try:
-        with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
-            content = f.read()
+        if filename.lower().endswith('.pdf'):
+            try:
+                import PyPDF2
+                with open(file_path, "rb") as f:
+                    reader = PyPDF2.PdfReader(f)
+                    for page in reader.pages:
+                        text = page.extract_text()
+                        if text:
+                            content += text + "\n"
+            except ImportError:
+                content = "[PDF parsing error: PyPDF2 not installed]"
+        else:
+            with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
+                content = f.read()
     except Exception as e:
-        content = f"[Binary/Unreadable file content: {e}]"
+        content = f"[Unreadable file content: {e}]"
 
     size_kb = round(os.path.getsize(file_path) / 1024, 1)
     file_type = filename.split(".")[-1].upper() if "." in filename else "FILE"
