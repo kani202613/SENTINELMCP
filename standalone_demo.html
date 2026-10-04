@@ -1624,6 +1624,7 @@
 
     // CHATBOT INTERACTIVE HANDLERS & FILE ATTACHMENTS
     let pendingConfirmationMsg = "";
+    let pendingConfirmationAttachment = null;
     let stagedAttachment = null;
 
     function triggerChatFileUpload() {
@@ -1856,12 +1857,15 @@
             container.appendChild(denyNotice);
             container.scrollTop = container.scrollHeight;
             pendingConfirmationMsg = "";
+            pendingConfirmationAttachment = null;
             return;
         }
 
-        if (pendingConfirmationMsg) {
+        if (pendingConfirmationMsg !== "" || pendingConfirmationAttachment !== null) {
             let msg = pendingConfirmationMsg;
+            stagedAttachment = pendingConfirmationAttachment;
             pendingConfirmationMsg = "";
+            pendingConfirmationAttachment = null;
             sendChatMessage(msg, true);
         }
     }
