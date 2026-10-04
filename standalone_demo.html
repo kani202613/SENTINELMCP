@@ -1688,7 +1688,7 @@
             }
             input.value = '';
         })
-        .catch(err => {
+        }, 500); /*.catch(err => {
             uploadNotice.remove();
             alert("Error uploading file: " + err);
             input.value = '';
@@ -1860,7 +1860,7 @@
             // Refresh global dashboard graphs & stream
             updateDashboard();
         })
-        .catch(err => {
+        }, 500); /*.catch(err => {
             sendBtn.disabled = false;
             let loader = document.getElementById(loadingId);
             if (loader) loader.remove();
