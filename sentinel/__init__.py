@@ -1,0 +1,1 @@
+# SentinelMCP Core Package
