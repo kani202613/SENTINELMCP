@@ -75,7 +75,7 @@ HIGH_RISK_ACTIONS = {
 class SecureChatService:
     def __init__(self, interceptor: Optional[SentinelInterceptor] = None):
         self.interceptor = interceptor or SentinelInterceptor(audit_log_path="data/m5_audit_log.jsonl")
-        self.model_id = os.getenv("CHAT_MODEL", os.getenv("GEMINI_MODEL", "gemini-2.0-flash"))
+        self.model_id = os.getenv("CHAT_MODEL", os.getenv("GEMINI_MODEL", "gemini-3.8-flash"))
         self.api_key = os.getenv("GEMINI_API_KEY", "")
         self.conversations: Dict[str, List[Dict[str, Any]]] = {}
 

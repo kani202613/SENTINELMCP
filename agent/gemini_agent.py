@@ -1,6 +1,6 @@
 """
 SentinelMCP Stage 5 — Gemini Agent Integration Module
-Configurable via GEMINI_MODEL environment variable (default: gemini-2.0-flash).
+Configurable via GEMINI_MODEL environment variable (default: gemini-3.8-flash).
 Routes all LLM tool call requests through SentinelInterceptor.intercept_and_execute().
 """
 import os
@@ -11,7 +11,7 @@ from sentinel.interceptor import SentinelInterceptor
 
 class GeminiSentinelAgent:
     def __init__(self, model_id: str = None, audit_log_path: str = "data/m5_audit_log.json"):
-        self.model_id = model_id or os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+        self.model_id = model_id or os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
         self.interceptor = SentinelInterceptor(audit_log_path=audit_log_path)
 
     def execute_workflow_step(

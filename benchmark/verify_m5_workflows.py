@@ -118,7 +118,7 @@ def evaluate_ground_truth_outcome(is_attack: bool, steps_executed: List[Dict[str
         }
 
 def run_stage_5_evaluation():
-    model_id = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+    model_id = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
     print("==================================================================================")
     print(f"   SentinelMCP Stage 5: Autonomous Gemini Agent Multi-Turn Workflow Evaluation")
     print(f"   Configured GEMINI_MODEL: {model_id}")

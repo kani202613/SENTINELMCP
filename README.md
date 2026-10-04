@@ -200,7 +200,7 @@ To prevent boundary oscillation near decision edges ($20, 50, 80$), if the SRI s
 
 SentinelMCP includes an autonomous agent integration wrapper [`agent/gemini_agent.py`](file:///c:/Users/kanis/OneDrive/Desktop/FINAL-YR%20PROJECT/SENTINAL-MCP/agent/gemini_agent.py).
 
-- **Model Selection**: Configurable via the `GEMINI_MODEL` environment variable (defaults to `gemini-2.0-flash`).
+- **Model Selection**: Configurable via the `GEMINI_MODEL` environment variable (defaults to `gemini-3.8-flash`).
 - **Proxy Binding**: Routes all LLM tool calls through `SentinelInterceptor.intercept_and_execute()`.
 - **Audit Logging**: Emits structured JSON Lines audit records to [`data/m5_audit_log.jsonl`](file:///c:/Users/kanis/OneDrive/Desktop/FINAL-YR%20PROJECT/SENTINAL-MCP/data/m5_audit_log.jsonl).
 
