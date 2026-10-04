@@ -67,6 +67,7 @@ def calculate_sri(
             break
 
     if near_edge and len(session_history) >= 1:
+        pass
 #         recent_3 = session_history[-3:]
 #         recent_sris = [e.get("sri", 0) for e in recent_3]
 #         recent_trusts = [e.get("source_trust", "INTERNAL") for e in recent_3]
