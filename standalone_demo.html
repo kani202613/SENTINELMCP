@@ -1865,6 +1865,7 @@
         }
 
         if (pendingConfirmationMsg !== "" || pendingConfirmationAttachment !== null) {
+            document.getElementById('chat-confirmation-box').style.display = 'none';
             let msg = pendingConfirmationMsg;
             stagedAttachment = pendingConfirmationAttachment;
             pendingConfirmationMsg = "";
