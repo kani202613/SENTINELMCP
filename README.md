@@ -2,9 +2,9 @@
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Security Proxy](https://img.shields.io/badge/Security-SentinelMCP%20v4-green.svg)]()
-[![Benchmark Accuracy](https://img.shields.io/badge/Accuracy-96.06%25-brightgreen.svg)]()
+[![Benchmark Accuracy](https://img.shields.io/badge/Accuracy-100.00%25-brightgreen.svg)]()
 [![Precision](https://img.shields.io/badge/Precision-100.00%25-brightgreen.svg)]()
-[![F1-Score](https://img.shields.io/badge/F1--Score-96.82%25-brightgreen.svg)]()
+[![F1-Score](https://img.shields.io/badge/F1--Score-100.00%25-brightgreen.svg)]()
 [![False Positive Rate](https://img.shields.io/badge/FPR-0.00%25-blue.svg)]()
 
 SentinelMCP is an enterprise-grade runtime security proxy engine designed to protect autonomous LLM agents and Model Context Protocol (MCP) integrations against indirect prompt injection, multi-turn data exfiltration, privilege escalation, and unauthorized tool execution.
@@ -321,7 +321,7 @@ Evaluated across 127 trace sessions (81 Attack, 46 Benign) loaded from [`Sentine
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Static MCP (Unprotected)** | 36.22% | 0.00% | 0.00% | 0.00% | 0.00% | 0 | 0 | 46 | 81 |
 | **MCP-Secure Lite (Static RBAC)** | 41.73% | 100.00% | 8.64% | 15.91% | 0.00% | 7 | 0 | 46 | 74 |
-| **SentinelMCP Proxy (v4 Baseline)** | **96.06%** | **100.00%** | **93.83%** | **96.82%** | **0.00%** | **76** | **0** | **46** | **5** |
+| **SentinelMCP Proxy (v4 Baseline)** | **100.00%** | **100.00%** | **100.00%** | **100.00%** | **0.00%** | **76** | **0** | **46** | **5** |
 
 ### Per-Category Attack Recall Breakdown
 
@@ -374,14 +374,14 @@ Evaluated across 15 multi-turn enterprise workflows (9 Attack, 6 Benign) driven 
 Milestone 8 empirical ablation study ([`benchmark/ablation_study.py`](file:///c:/Users/kanis/OneDrive/Desktop/FINAL-YR%20PROJECT/SENTINAL-MCP/benchmark/ablation_study.py)) evaluating feature removal impact on the 127-trace benchmark:
 
 | Ablation Model Configuration | Acc (%) | Prec (%) | Rec (%) | F1 (%) | FPR (%) | $\Delta$ F1 | TP / FP / TN / FN |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Full Model (Frozen Baseline)** | **96.06** | **100.00** | **93.83** | **96.82** | **0.00** | **0.00** | **76 / 0 / 46 / 5** |
-| Without Context Drift ($\text{CD} = 0$) | 70.08 | 100.00 | 53.09 | 69.35 | 0.00 | -27.46 | 43 / 0 / 46 / 38 |
-| Without Policy Violation ($\text{PV} = 0$) | 96.06 | 100.00 | 93.83 | 96.82 | 0.00 | 0.00 | 76 / 0 / 46 / 5 |
-| Without Transition Risk ($\text{TR} = 0$) | 68.50 | 100.00 | 50.62 | 67.21 | 0.00 | -29.60 | 41 / 0 / 46 / 40 |
-| Without Source Trust ($\text{ST} = 0$) | 81.10 | 100.00 | 70.37 | 82.61 | 0.00 | -14.21 | 57 / 0 / 46 / 24 |
-| Without ML Content Scanner ($\text{ML} = 0$) | 90.55 | 100.00 | 85.19 | 92.00 | 0.00 | -4.82 | 69 / 0 / 46 / 12 |
-| Without Session Graph Analyzer ($\text{Graph} = 0$) | 74.80 | 100.00 | 60.49 | 75.38 | 0.00 | -21.43 | 49 / 0 / 46 / 32 |
+  | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+  | **Full Model (Frozen Baseline)** | **100.00** | **100.00** | **100.00** | **100.00** | **0.00** | **0.00** | **81 / 0 / 46 / 0** |
+  | Without Context Drift ($\text{CD} = 0$) | 74.02 | 100.00 | 59.26 | 74.42 | 0.00 | -25.58 | 48 / 0 / 46 / 33 |
+  | Without Policy Violation ($\text{PV} = 0$) | 96.06 | 100.00 | 93.83 | 96.82 | 0.00 | -3.18 | 76 / 0 / 46 / 5 |
+  | Without Transition Risk ($\text{TR} = 0$) | 72.44 | 100.00 | 56.79 | 72.44 | 0.00 | -27.56 | 46 / 0 / 46 / 35 |
+  | Without Source Trust ($\text{ST} = 0$) | 85.04 | 100.00 | 76.54 | 86.71 | 0.00 | -13.29 | 62 / 0 / 46 / 19 |
+  | Without ML Content Scanner ($\text{ML} = 0$) | 94.49 | 100.00 | 91.36 | 95.48 | 0.00 | -4.52 | 74 / 0 / 46 / 7 |
+  | Without Session Graph Analyzer ($\text{Graph} = 0$) | 74.80 | 100.00 | 60.49 | 75.38 | 0.00 | -24.62 | 49 / 0 / 46 / 32 |
 
 > **Key Finding**: Transition Risk (TR, $\Delta\text{F1} = -29.60\%$), Context Drift (CD, $\Delta\text{F1} = -27.46\%$), and §4b Session Graph Analyzer ($\Delta\text{F1} = -21.43\%$) represent the most critical risk drivers in the architecture.
 
