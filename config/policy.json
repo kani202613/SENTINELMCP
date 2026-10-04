@@ -8,8 +8,7 @@
       "database_tool.query_select",
       "slack_tool.send_message",
       "web_tool.fetch_page",
-      "http_tool.send_request",
-      "http_tool.read_email"
+      "http_tool.send_request"
     ],
     "disallowed_tools": [
       "file_tool.write_file",

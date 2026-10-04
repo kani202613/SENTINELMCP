@@ -67,21 +67,20 @@ def calculate_sri(
             break
 
     if near_edge and len(session_history) >= 1:
-        pass
-#         recent_3 = session_history[-3:]
-#         recent_sris = [e.get("sri", 0) for e in recent_3]
-#         recent_trusts = [e.get("source_trust", "INTERNAL") for e in recent_3]
+        recent_3 = session_history[-3:]
+        recent_sris = [e.get("sri", 0) for e in recent_3]
+        recent_trusts = [e.get("source_trust", "INTERNAL") for e in recent_3]
 
-#         if "EXTERNAL_CONTENT" in recent_trusts or (len(recent_sris) >= 2 and recent_sris[-1] > recent_sris[0]):
-#             hysteresis_applied = True
-#             old_decision = decision
-#             if decision == "SAFE":
-#                 decision = "MONITOR"
-#             elif decision == "MONITOR":
-#                 decision = "SUSPICIOUS"
-#             elif decision == "SUSPICIOUS":
-#                 decision = "BLOCKED"
-#             secondary_reason = f"Hysteresis check on H_S[-3:] elevated decision from {old_decision} to {decision} due to risk escalation."
+        if "EXTERNAL_CONTENT" in recent_trusts or (len(recent_sris) >= 2 and recent_sris[-1] > recent_sris[0]):
+            hysteresis_applied = True
+            old_decision = decision
+            if decision == "SAFE":
+                decision = "MONITOR"
+            elif decision == "MONITOR":
+                decision = "SUSPICIOUS"
+            elif decision == "SUSPICIOUS":
+                decision = "BLOCKED"
+            secondary_reason = f"Hysteresis check on H_S[-3:] elevated decision from {old_decision} to {decision} due to risk escalation."
 
     explanation = _generate_explanation(sri_final, decision, cd, pv, tr, st, ml, matched_path, graph_bonus, secondary_reason)
 

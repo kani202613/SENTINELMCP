@@ -1681,7 +1681,8 @@
     }
 
     function clearChatHistory() {
-        let sessionId = document.getElementById('chat-session-id').value || 'chat_session_001';
+        window.currentChatSessionId = window.currentChatSessionId || 'chat_' + Date.now();
+    let sessionId = document.getElementById('chat-session-id') ? document.getElementById('chat-session-id').value || window.currentChatSessionId : window.currentChatSessionId;
         fetch('/api/chat/clear', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -1692,7 +1693,8 @@
     }
 
     function exportChatHistory() {
-        let sessionId = document.getElementById('chat-session-id').value || 'chat_session_001';
+        window.currentChatSessionId = window.currentChatSessionId || 'chat_' + Date.now();
+    let sessionId = document.getElementById('chat-session-id') ? document.getElementById('chat-session-id').value || window.currentChatSessionId : window.currentChatSessionId;
         fetch(`/api/chat/export?session_id=${sessionId}`)
             .then(r => r.json())
             .then(data => {
@@ -1736,7 +1738,8 @@
 
         if (!message && !attachmentToSend) return;
 
-        let sessionId = document.getElementById('chat-session-id').value || 'chat_session_001';
+        window.currentChatSessionId = window.currentChatSessionId || 'chat_' + Date.now();
+    let sessionId = document.getElementById('chat-session-id') ? document.getElementById('chat-session-id').value || window.currentChatSessionId : window.currentChatSessionId;
         let userRole = document.getElementById('chat-user-role').value || 'junior_analyst';
         let container = document.getElementById('chat-stream-container');
         let sendBtn = document.getElementById('chat-send-btn');
