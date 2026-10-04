@@ -47,6 +47,12 @@ DANGEROUS_PATH_PATTERNS = [
         "name": "Database Destruction Chain",
         "pattern": ["fetch_page", "query_delete"],
         "description": "Web fetch followed by database table deletion query"
+    },
+    {
+        "id": "PATH_ADAPTIVE_EVASION",
+        "name": "Adaptive Evasion Recon Chain",
+        "pattern": ["read", "select", "list_repos"],
+        "description": "File read followed by DB query and GitHub recon exfiltration"
     }
 ]
 
