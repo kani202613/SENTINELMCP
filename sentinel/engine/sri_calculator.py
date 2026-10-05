@@ -44,7 +44,7 @@ def calculate_sri(
     sri_base = round(100 * sri_raw)
 
     # Injection payload / sensitive asset bonus (+50 SRI) (pushes SRI >= 75 BLOCKED)
-    injection_bonus = 50 if (ml >= 0.75 or is_sensitive_asset_request) else 0
+    injection_bonus = 35 if (ml >= 0.75 or is_sensitive_asset_request) else 0
 
     # 3. §4b Graph Analyzer path matching (+30 bonus)
     graph_bonus, matched_path, seq = analyze_session_graph(session_history, tool_name, action)
@@ -61,7 +61,7 @@ def calculate_sri(
     secondary_reason = ""
 
     near_edge = False
-    for edge in [20, 50, 80]:
+    for edge in [40, 50, 75]:
         if abs(sri_final - edge) <= 5:
             near_edge = True
             break
