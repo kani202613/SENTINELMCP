@@ -61,7 +61,7 @@ def calculate_sri(
     secondary_reason = ""
 
     near_edge = False
-    for edge in [40, 50, 75]:
+    for edge in [20, 50, 80]:
         if abs(sri_final - edge) <= 5:
             near_edge = True
             break
@@ -103,11 +103,11 @@ def calculate_sri(
     }
 
 def _map_sri_to_band(sri: int) -> str:
-    if sri < 40:
+    if sri <= 20:
         return "SAFE"
-    elif sri < 50:
+    elif sri <= 50:
         return "MONITOR"
-    elif sri < 75:
+    elif sri <= 80:
         return "SUSPICIOUS"
     else:
         return "BLOCKED"
